@@ -37,9 +37,10 @@
 <style scoped>
   .back{
     height: 700px;
-    background-image: url("/static/index-back2.jpg");
+    background-image: url("/static/index-back.jpg");
+    background-size:100% 100%;
     border: 1px solid black;
-    opacity: 0.35;
+    /*opacity: 0.35;*/
   }
 
   .main{

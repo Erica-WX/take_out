@@ -11,7 +11,7 @@
                  class="el-menu-demo"
                  mode="horizontal"
                  @select="handleSelect"
-                 background-color="dodgerblue"
+                 background-color="#409EFF"
                  text-color="#fff"
                  active-text-color="#000000"
 
@@ -47,7 +47,7 @@
 <style scoped>
 
   .logo{
-    background-color: dodgerblue;
+    background-color: #409EFF;
     text-align: center;
     /*font-size: 18px;*/
     height: 60px;
@@ -64,7 +64,7 @@
   }
 
   .c{
-    color: dodgerblue;
+    color: #409EFF;
   }
 
 </style>
