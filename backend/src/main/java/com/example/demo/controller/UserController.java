@@ -1,9 +1,12 @@
 package com.example.demo.controller;
 
 import com.example.demo.payloads.user.MemberRegisterRequest;
+import com.example.demo.payloads.user.MemberVerifyRequest;
 import com.example.demo.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @Author: 王轩
@@ -30,5 +33,15 @@ public class UserController {
     @GetMapping("/login")
     public boolean login(){
         return false;
+    }
+
+    @RequestMapping("/verify")
+    public void verify(HttpServletResponse response, @RequestParam("code") String code) throws Exception {
+
+        if(userService.verify(code)) {
+            response.sendRedirect("http://localhost:3000");
+        }else {
+            response.sendRedirect("http://localhost:3000/#/register");
+        }
     }
 }

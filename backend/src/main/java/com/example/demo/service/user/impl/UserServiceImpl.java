@@ -2,7 +2,9 @@ package com.example.demo.service.user.impl;
 
 import com.example.demo.dao.user.MemberRepository;
 import com.example.demo.entity.Member;
+import com.example.demo.service.mail.MailService;
 import com.example.demo.service.user.UserService;
+import com.example.demo.util.RandomCodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +19,19 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
+
     private MemberRepository memberRepository;
+
+    private MailService mailService;
+
+    @Autowired
+    public UserServiceImpl(MemberRepository memberRepository,
+                           MailService mailService) {
+        this.memberRepository = memberRepository;
+        this.mailService = mailService;
+    }
+
+    private static RegisterMemberMap registerMemberMap = new RegisterMemberMap();
 
     @Override
     public boolean register(String username, String password, String email) {
@@ -27,7 +40,13 @@ public class UserServiceImpl implements UserService {
         if(!member.isPresent()){
             //即表示email不存在
             Member newMember = new Member(email,username,password,1,true);
-            memberRepository.save(newMember);
+
+            String randomCode = RandomCodeUtil.generateUniqueCode();
+            registerMemberMap.put(randomCode, newMember);
+            registerMemberMap.setTime(randomCode);
+
+            mailService.sendMail(email, randomCode);
+
             return true;
         }
 
@@ -44,6 +63,18 @@ public class UserServiceImpl implements UserService {
             }
         }
 
+        return false;
+    }
+
+    @Override
+    public boolean verify(String code) {
+        Member member = registerMemberMap.get(code);
+
+        if(member != null) {
+            memberRepository.save(member);
+            registerMemberMap.remove(code);
+            return true;
+        }
         return false;
     }
 }

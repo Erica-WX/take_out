@@ -12,4 +12,5 @@ public interface UserService {
 
     boolean register(String username, String password, String email);
     boolean login(String username, String password);
+    boolean verify(String code);
 }
