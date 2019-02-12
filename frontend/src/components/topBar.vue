@@ -19,7 +19,6 @@
           <el-menu-item index="1">外卖</el-menu-item>
           <el-menu-item index="2">登录</el-menu-item>
           <el-menu-item index="3">注册</el-menu-item>
-          <el-menu-item index="4">注册</el-menu-item>
 
         </el-menu>
       </div>
@@ -67,4 +66,9 @@
     color: #409EFF;
   }
 
+</style>
+
+<style>
+
+  .el-menu.el-menu--horizontal{border-bottom:solid 1px #409EFF}
 </style>

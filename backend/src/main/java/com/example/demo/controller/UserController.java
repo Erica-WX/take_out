@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
+import com.example.demo.payloads.user.MemberLoginRequest;
 import com.example.demo.payloads.user.MemberRegisterRequest;
-import com.example.demo.payloads.user.MemberVerifyRequest;
 import com.example.demo.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,15 +31,15 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public boolean login(){
-        return false;
+    public String login(String email, String password){
+       return userService.login(email, password);
     }
 
     @RequestMapping("/verify")
     public void verify(HttpServletResponse response, @RequestParam("code") String code) throws Exception {
 
         if(userService.verify(code)) {
-            response.sendRedirect("http://localhost:3000");
+            response.sendRedirect("http://localhost:3000/#/login");
         }else {
             response.sendRedirect("http://localhost:3000/#/register");
         }

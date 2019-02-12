@@ -54,16 +54,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean login(String email, String password){
+    public String login(String email, String password){
         Optional<Member> member = memberRepository.findByEmail(email);
 
         if(member.isPresent()){
             if(member.get().getPassword().equals(password)){
-                return true;
+                return member.get().getUsername();
             }
         }
 
-        return false;
+        return "";
     }
 
     @Override
