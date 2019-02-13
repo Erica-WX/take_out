@@ -1,9 +1,9 @@
-package com.example.demo.service.user.impl;
+package com.example.demo.service.member.impl;
 
-import com.example.demo.dao.user.MemberRepository;
+import com.example.demo.dao.member.MemberRepository;
 import com.example.demo.entity.Member;
 import com.example.demo.service.mail.MailService;
-import com.example.demo.service.user.UserService;
+import com.example.demo.service.member.MemberService;
 import com.example.demo.util.RandomCodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import java.util.Optional;
  */
 
 @Service
-public class UserServiceImpl implements UserService {
+public class MemberServiceImpl implements MemberService {
 
 
     private MemberRepository memberRepository;
@@ -25,8 +25,8 @@ public class UserServiceImpl implements UserService {
     private MailService mailService;
 
     @Autowired
-    public UserServiceImpl(MemberRepository memberRepository,
-                           MailService mailService) {
+    public MemberServiceImpl(MemberRepository memberRepository,
+                             MailService mailService) {
         this.memberRepository = memberRepository;
         this.mailService = mailService;
     }

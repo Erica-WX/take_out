@@ -1,6 +1,6 @@
 <template>
   <div class="back">
-    <topBar></topBar>
+    <memberNavi></memberNavi>
     <div class="welcome">
       <div class="title">
         {{this.username}}, 欢迎前来点单~
@@ -20,12 +20,12 @@
         <el-form-item v-show="needAdd" label="新增地址">
 
           <div style="display: flex">
-            <el-input v-model="address_form.new_address"></el-input><el-button>搜索</el-button>
+            <el-input v-model="address_form.new_address"></el-input><el-button v-on:click="addAddress">搜索</el-button>
           </div>
 
         </el-form-item>
         <el-form-item v-show="!needAdd">
-          没有地址，<a class="add" v-on:click="add">新增一个</a>
+          没有地址，<a class="add" v-on:click="addLine">新增一个</a>
         </el-form-item>
 
       </el-form>
@@ -35,17 +35,41 @@
 </template>
 
 <script>
-  import topBar from '../components/topBar'
+  import memberNavi from '../components/memberNavi'
   export default {
     name: "select-address",
-    components: {topBar},
+    components: {memberNavi},
     mounted:function() {
-      /*console.log(this.$route.params.username);
-      this.username = this.$route.params.username;*/
+      console.log(this.$route.params.username);
+      this.username = this.$route.params.username;
+
+      let email = localStorage.user_email;
+      let self = this;
+      this.$axios.get('/user/get_address',{
+        params:{
+          email:email
+        }
+      }).then(
+        function (response) {
+          console.log(response.data);
+          let list = response.data;
+          let address_list = [];
+          for(let i = 0; i < list.length; i++) {
+            let a = {
+              value: (i+1) + "",
+              label: list[i],
+            };
+            address_list.push(a);
+          }
+          self.address_form.address_list = address_list;
+        }
+      ).catch(function (error) {
+        console.log(error)
+      })
     },
     data() {
       return {
-        username:'Erica',
+        username:'',
         needAdd:false,
         address_form:{
           address_list:[
@@ -71,9 +95,30 @@
       }
     },
     methods:{
-      add(){
+      addLine(){
         console.log("add address");
         this.needAdd = true;
+      },
+      addAddress(){
+        let email = localStorage.user_email;
+        let address = this.address_form.new_address;
+        this.$axios.get("/user/new_address",{
+          params:{
+            email:email,
+            address:address
+          }
+        }).then(
+          function (response) {
+
+          }
+        ).catch(function (error) {
+
+        });
+
+        this.search();
+      },
+      search(){
+
       }
     }
   }
@@ -119,4 +164,5 @@
     font-size: 21px;
     line-height: 22px;
   }
+
 </style>

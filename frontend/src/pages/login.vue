@@ -7,7 +7,7 @@
           <h1 class="title">登 录</h1>
         </div>
         <div class="login">
-          <el-form ref="form" :model="login_form" label-width="80px">
+          <el-form ref="login_form" :model="login_form" label-width="80px">
             <el-form-item label="用户邮箱">
               <el-input v-model="login_form.email"></el-input>
             </el-form-item>
@@ -17,7 +17,7 @@
           </el-form>
         </div>
         <div>
-          <p> <router-link to="/register"><i> >>>没有账号，去注册</i>></router-link> </p>
+          <p> <!--<router-link to="/register"><i> >>>没有账号，去注册</i>></router-link>--><a v-on:click="go"><i> >>>没有账号，去注册</i></a></p>
         </div>
         <div class="enter">
           <el-button v-on:click="login">登录</el-button>
@@ -56,6 +56,7 @@
             function(response) {
               console.log(response.data);
               if(response.data !== "") {
+                localStorage.user_email = email;
                 self.$router.push({name:'selectAddress',params:{username:response.data}});
               }else {
                 alert("用户名或者密码错误！");
@@ -64,7 +65,10 @@
           ).catch(function(error){
 
           })
-        }
+        },
+        go(){
+          window.location.href = "http://localhost:3000/#/register";
+        },
       }
     }
 </script>
@@ -110,6 +114,15 @@
 <style>
   .el-form-item__label{
     color:white;
+    /*font-size: 16px;*/
+  }
+  /*.el-form-item__label{
+    color:white;
     font-size: 16px;
   }
+
+  .el-input{
+    font-size: 18px;
+    line-height: 20px;
+  }*/
 </style>

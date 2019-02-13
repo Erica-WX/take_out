@@ -70,5 +70,5 @@
 
 <style>
 
-  .el-menu.el-menu--horizontal{border-bottom:solid 1px #409EFF}
+  /*.el-menu.el-menu--horizontal{border-bottom:solid 1px #409EFF}*/
 </style>

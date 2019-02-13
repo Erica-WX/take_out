@@ -2,8 +2,10 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import index from '@/pages/index'
 import login from '@/pages/login'
+import restLogin from '@/pages/restLogin'
 import register from '@/pages/register'
 import selectAddress from '@/pages/selectAddress'
+import foodList from '@/pages/foodList'
 
 
 Vue.use(Router)
@@ -21,6 +23,11 @@ export default new Router({
       component: login
     },
     {
+      path: '/restLogin',
+      name: 'restLogin',
+      component: restLogin
+    },
+    {
       path: '/register',
       name: 'register',
       component: register
@@ -29,6 +36,11 @@ export default new Router({
       path: '/selectAddress',
       name: 'selectAddress',
       component: selectAddress
+    },
+    {
+      path: '/foodList',
+      name: 'foodList',
+      component: foodList
     }
   ]
 })

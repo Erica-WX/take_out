@@ -11,7 +11,7 @@
           <el-tab-pane label="会员注册">
             <div class="member">
               <div class="tab_title">会员基本信息填写：</div>
-              <el-form :label-position="member_form.labelPosition" ref="form" :model="member_form" label-width="80px">
+              <el-form :label-position="member_form.labelPosition" ref="member_form" :model="member_form" label-width="80px">
                 <el-form-item label="会员名">
                   <el-input v-model="member_form.username"></el-input>
                 </el-form-item>
@@ -22,7 +22,7 @@
                   <el-input type="password" v-model="member_form.password" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item>
-                  <div style="margin-left: 120px;margin-top: 20px">
+                  <div style="margin-top: 20px">
                     <el-button type="primary" v-on:click="member_register">注册</el-button>
                     <el-button>清空</el-button>
                   </div>
@@ -30,7 +30,38 @@
               </el-form>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="餐厅注册">餐厅注册</el-tab-pane>
+          <el-tab-pane label="餐厅注册">
+            <div class="member">
+              <div class="tab_title">
+                餐厅基本信息填写：
+              </div>
+              <el-form :label-position="rest_form.labelPosition" ref="rest_form" :model="rest_form" label-width="80px">
+                <el-form-item label="餐厅名">
+                  <el-input v-model="rest_form.rest_name"></el-input>
+                </el-form-item>
+                <el-form-item label="餐厅地址">
+                  <el-input v-model="rest_form.address"></el-input>
+                </el-form-item>
+                <el-form-item label="餐厅类型">
+                  <el-select v-model="rest_form.value">
+                    <el-option
+                        v-for="item in rest_form.type"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                    >
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item>
+                  <div style="margin-top: 20px">
+                    <el-button type="primary" v-on:click="rest_register">注册</el-button>
+                    <el-button v-on:click=clear>清空</el-button>
+                  </div>
+                </el-form-item>
+              </el-form>
+            </div>
+          </el-tab-pane>
         </el-tabs>
       </div>
     </div>
@@ -41,7 +72,8 @@
     export default {
       name: "register",
       components: {topBar},
-
+      mounted:function(){
+      },
       data() {
         return {
           tabPosition: 'left',
@@ -50,6 +82,30 @@
             username:'',
             email:'',
             password:''
+          },
+          rest_form:{
+            labelPosition:'top',
+            rest_name:'',
+            address:'',
+            type:[
+              {
+                value:'甜品饮品',
+                label:'甜品饮品'
+              },
+              {
+                value:'快餐便当',
+                label:'快餐便当'
+              },
+              {
+                value:'小吃夜宵',
+                label:'小吃夜宵'
+              },
+              {
+                value:'特色菜系',
+                label:'特色菜系'
+              }
+            ],
+            value:''
           },
         }
       },
@@ -63,14 +119,40 @@
           console.log(username, email, password);
 
           this.$axios.post("/user/register",{
-            username:username,
-            password:password,
-            email:email
+            username: username,
+            password: password,
+            email: email
           }).then(
             function (response) {
               console.log(response);
             }
           )
+        },
+        rest_register() {
+          console.log(this.rest_form.value);
+
+          let name = this.rest_form.rest_name;
+          let address = this.rest_form.address;
+          let type = this.rest_form.value;
+
+          let self = this;
+          this.$axios.post('/rest/register',{
+            name: name,
+            address: address,
+            type: type
+          }).then(
+            function (response) {
+              console.log(response.data);
+              let id = response.data;
+              alert("您餐厅的7位识别码是："+id+"\n 管理员信息审核完毕后即可使用该识别码登录。");
+              self.$router.push({name:'restLogin'});
+            }
+          ).catch(function (error) {
+            console.log(error);
+          })
+        },
+        clear() {
+
         }
       }
 
@@ -103,15 +185,22 @@
   .tab_title{
     color: #b7b7b7;
     font-size: 20px;
+    margin-bottom: 20px;
   }
 
 </style>
 
 <style>
 
+  .el-form-item__label{
+    color:black;
+    font-size: 16px;
+  }
+
   .el-tabs__item{
     font-size: 18px !important;
     padding-left: 50px;
     padding-right: 50px;
   }
+
 </style>

@@ -1,8 +1,8 @@
 package com.example.demo.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
+import java.util.Set;
 
 /**
  * @Author: 王轩
@@ -16,6 +16,10 @@ public class Member {
     @Id
     @Email
     private String email;
+    
+    @OneToMany(cascade={CascadeType.MERGE},fetch= FetchType.LAZY)
+    @JoinColumn(name="email")
+    private Set<Address> addresses;
 
     private String username;
 
@@ -63,6 +67,14 @@ public class Member {
 
     public boolean isUsable() {
         return usable;
+    }
+
+    public Set<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(Set<Address> addresses) {
+        this.addresses = addresses;
     }
 
     public Member(@Email String email, String username, String password, int level, boolean usable) {
