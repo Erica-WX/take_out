@@ -6,6 +6,8 @@ import restLogin from '@/pages/restLogin'
 import register from '@/pages/register'
 import selectAddress from '@/pages/selectAddress'
 import foodList from '@/pages/foodList'
+import restPage from '@/pages/restPage'
+import launchNewFood from '@/pages/launchNewFood'
 
 
 Vue.use(Router)
@@ -41,6 +43,16 @@ export default new Router({
       path: '/foodList',
       name: 'foodList',
       component: foodList
+    },
+    {
+      path: '/restPage',
+      name: 'restPage',
+      component: restPage
+    },
+    {
+      path: '/launchNewFood',
+      name: 'launchNewFood',
+      component: launchNewFood
     }
   ]
 })
