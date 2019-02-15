@@ -29,7 +29,17 @@
 
 <script>
   export default {
-    name: "rest-top"
+    name: "rest-top",
+    data() {
+      return {
+        activeIndex: '1',
+      }
+    },
+    methods: {
+      handleSelect() {
+
+      }
+    }
   }
 </script>
 

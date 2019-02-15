@@ -17,10 +17,10 @@
       <div style="padding: 0;position: relative; min-height: 800px;width: 100%">
         <div class="container-fluid" style="width: 100%;">
           <div class="row" style="width: 100%">
-            <div style="width: 95%;margin-left: 5%;margin-top: 10px">
+            <div style="width: 95%;margin-left: 5%;margin-top: 30px">
               <el-row :gutter="0">
                 <el-col :span="6">
-                  <div id="UserBar" style="margin-left: 0;margin-top: 25px">
+                  <div id="UserBar" style="margin-left: 0;">
                     <left-user-bar></left-user-bar>
                   </div>
                 </el-col>
@@ -28,9 +28,9 @@
                   <div class="panel-group">
                     <div class="panel panel-default" id="mainpanel" style="min-height: 650px">
                       <div class="panel-heading">
-                        <h4 class="panel-title" id="tmptitle">
+                        <div class="panel-title" id="tmptitle">
                           {{ paneltitle }}
-                        </h4>
+                        </div>
                       </div>
                       <div>
                         <div class="panel-body" id="maincontext">
@@ -132,7 +132,7 @@
   {
     display: block;
     font-size: 18px;
-    /*font-weight: bold;*/
+    font-weight: bold;
     color: #48576a;
     background: white;
     padding-left: 12px;

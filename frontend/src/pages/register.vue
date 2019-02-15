@@ -7,8 +7,8 @@
         </div>
       </div>
       <div>
-        <el-tabs :tab-position="tabPosition">
-          <el-tab-pane label="会员注册">
+        <el-tabs :tab-position="tabPosition" v-model="index">
+          <el-tab-pane label="会员注册" name="1">
             <div class="member">
               <div class="tab_title">会员基本信息填写：</div>
               <el-form :label-position="member_form.labelPosition" ref="member_form" :model="member_form" label-width="80px">
@@ -30,7 +30,7 @@
               </el-form>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="餐厅注册">
+          <el-tab-pane label="餐厅注册" name="2">
             <div class="member">
               <div class="tab_title">
                 餐厅基本信息填写：
@@ -73,10 +73,13 @@
       name: "register",
       components: {topBar},
       mounted:function(){
+        let index = this.$route.params.index;
+        this.index = index;
       },
       data() {
         return {
           tabPosition: 'left',
+          index: '1',
           member_form: {
             labelPosition:'top',
             username:'',

@@ -7,13 +7,13 @@
       <el-submenu index="1" class="bar-main">
         <template slot="title">
           <i class="el-icon-location-outline bar-icon"></i>
-          <span>我的菜单</span>
+          <span>我的餐厅</span>
         </template>
         <el-menu-item-group>
-          <el-menu-item index="/UserSpace">账户总览</el-menu-item>
-          <el-menu-item index="/UserSpace/SchoolPerformance">校园表现</el-menu-item>
-          <el-menu-item index="/UserSpace/FinancialStanding">财务状况</el-menu-item>
-          <el-menu-item index="/UserSpace/BasicInformation">基本信息</el-menu-item>
+          <el-menu-item index="/restPage">基本信息</el-menu-item>
+          <el-menu-item index="/UserSpace/SchoolPerformance">餐厅菜单</el-menu-item>
+          <!--<el-menu-item index="/UserSpace/FinancialStanding">财务状况</el-menu-item>
+          <el-menu-item index="/UserSpace/BasicInformation">基本信息</el-menu-item>-->
         </el-menu-item-group>
       </el-submenu>
       <el-submenu index="2" class="bar-main">
