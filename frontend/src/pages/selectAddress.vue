@@ -5,14 +5,14 @@
       <div class="title">
         {{this.username}}, 欢迎前来点单~
       </div>
-      <el-form ref="address_form" :model="address_form" label-width="100px">
+      <el-form ref="address_form" :model="address_form" label-width="100px" v-show="!needAdd">
         <el-form-item label="收货地址">
-          <el-select v-model="address_form.value" placeholder="请选择你的收货地址" >
+          <el-select v-model="address_form.value" placeholder="请选择你的收货地址" style="width: 380px">
             <el-option
               v-for="item in address_form.address_list"
               :key="item.value"
               :label="item.label"
-              :value="item.value"
+              :value="item.label"
             >
             </el-option>
           </el-select>
@@ -20,14 +20,35 @@
         <el-form-item v-show="needAdd" label="新增地址">
 
           <div style="display: flex">
-            <el-input v-model="address_form.new_address"></el-input><el-button v-on:click="addAddress">搜索</el-button>
+            <el-input v-model="address_form.address"></el-input><el-button v-on:click="addAddress">搜索</el-button>
           </div>
 
         </el-form-item>
-        <el-form-item v-show="!needAdd">
+        <el-form-item>
           没有地址，<a class="add" v-on:click="addLine">新增一个</a>
         </el-form-item>
 
+      </el-form>
+
+      <el-form ref="new_form" :model="new_form" label-width="100px" v-show="needAdd">
+        <el-form-item label="选择区县">
+          <el-select v-model="new_form.district" style="width: 380px">
+            <el-option
+                v-for="item in new_form.district_list"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="详细地址">
+          <el-input v-model="new_form.address"></el-input>
+        </el-form-item>
+
+        <div style="margin-left: 50%;margin-top: 40px">
+          <el-button v-on:click="addAddress">搜索</el-button>
+        </div>
       </el-form>
     </div>
     <div></div>
@@ -40,8 +61,8 @@
     name: "select-address",
     components: {memberNavi},
     mounted:function() {
-      console.log(this.$route.params.username);
-      this.username = this.$route.params.username;
+
+      this.username = localStorage.username;
 
       let email = localStorage.user_email;
       let self = this;
@@ -57,7 +78,7 @@
           for(let i = 0; i < list.length; i++) {
             let a = {
               value: (i+1) + "",
-              label: list[i],
+              label: list[i].district+ " " + list[i].address,
             };
             address_list.push(a);
           }
@@ -71,54 +92,63 @@
       return {
         username:'',
         needAdd:false,
+
         address_form:{
-          address_list:[
-            {
-              value:'1',
-              label:'address1'
-            },{
-              value:'2',
-              label:'address2'
-            },
-            {
-              value:'3',
-              label:'address3'
-            },
-            {
-              value:'4',
-              label:'address4'
-            },
-          ],
-          value:'',
-          new_address:''
+          address_list:[],
+          value:''
+        },
+        new_form:{
+          district:'',
+          district_list:[],
+          address:''
         }
       }
     },
-    methods:{
+    watch: {
+      'address_form.value':{
+        handler(){
+          this.split_address();
+        }
+      },
+      deep:true,
+    },
+    methods: {
       addLine(){
         console.log("add address");
         this.needAdd = true;
+        this.new_form.district_list = JSON.parse(localStorage.district_list);
       },
       addAddress(){
         let email = localStorage.user_email;
-        let address = this.address_form.new_address;
+        let district = this.new_form.district;
+        let address = this.new_form.address;
+
+        let self = this;
         this.$axios.get("/user/new_address",{
           params:{
             email:email,
+            district:district,
             address:address
           }
         }).then(
           function (response) {
-
+            self.search(district, address);
           }
         ).catch(function (error) {
 
         });
-
-        this.search();
       },
-      search(){
+      search(district, address) {
+        this.$router.push({name:'foodList',params:{district:district,address:address}})
+      },
 
+      split_address(){
+        let list = this.address_form.value.split(" ");
+        console.log("list:");
+        console.log(list);
+        let district = list[0];
+        let address = list[1];
+        this.search(district, address);
       }
     }
   }
@@ -158,11 +188,6 @@
   .el-form-item__label{
     color:white;
     font-size: 20px;
-  }
-
-  .el-input{
-    font-size: 21px;
-    line-height: 22px;
   }
 
 </style>

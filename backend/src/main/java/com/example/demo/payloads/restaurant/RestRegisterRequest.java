@@ -9,12 +9,18 @@ public class RestRegisterRequest {
 
     private String name;
 
+    private String district;
+
     private String address;
 
     private String type;
 
     public String getName() {
         return name;
+    }
+
+    public String getDistrict() {
+        return district;
     }
 
     public String getAddress() {

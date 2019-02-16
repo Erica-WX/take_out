@@ -16,6 +16,12 @@
     export default {
       name: "food-list",
       components: {memberNavi},
+      mounted:function () {
+        console.log(this.$route.params);
+        let district = this.$route.params.district;
+        let address = this.$route.params.address;
+        this.now_address = district + " - " + address;
+      },
       data() {
         return {
           now_address:'南京市-鼓楼区-南京大学鼓楼校区',

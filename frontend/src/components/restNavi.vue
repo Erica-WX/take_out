@@ -26,7 +26,7 @@
                 </el-col>
                 <el-col :span="18" id="mainbody">
                   <div class="panel-group">
-                    <div class="panel panel-default" id="mainpanel" style="min-height: 650px">
+                    <div class="panel panel-default" id="mainpanel" style="min-height: 550px">
                       <div class="panel-heading">
                         <div class="panel-title" id="tmptitle">
                           {{ paneltitle }}

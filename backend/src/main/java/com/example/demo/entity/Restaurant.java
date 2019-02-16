@@ -1,7 +1,7 @@
 package com.example.demo.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 /**
  * @Author: 王轩
@@ -17,18 +17,25 @@ public class Restaurant {
 
     private String name;
 
+    private String district;
+
     private String address;
 
     private String type;
 
     private boolean usable;
 
+    @OneToMany(cascade={CascadeType.MERGE},fetch= FetchType.LAZY)
+    @JoinColumn(name="id")
+    private Set<Food> foodSet;
+
     public Restaurant() {
     }
 
-    public Restaurant(String id, String name, String address, String type, boolean usable) {
+    public Restaurant(String id, String name, String district, String address, String type, boolean usable) {
         this.id = id;
         this.name = name;
+        this.district = district;
         this.address = address;
         this.type = type;
         this.usable = usable;
@@ -48,6 +55,14 @@ public class Restaurant {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
     }
 
     public String getAddress() {
@@ -72,5 +87,13 @@ public class Restaurant {
 
     public void setUsable(boolean usable) {
         this.usable = usable;
+    }
+
+    public Set<Food> getFoodSet() {
+        return foodSet;
+    }
+
+    public void setFoodSet(Set<Food> foodSet) {
+        this.foodSet = foodSet;
     }
 }

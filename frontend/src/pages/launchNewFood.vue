@@ -1,13 +1,13 @@
 <template>
-  <restNavi paneltitle="发布新品">
+  <restNavi paneltitle="发布信息 > 发布新品">
     <div class="main-body">
       <el-form ref="food_info" :model="food_info" label-width="80px">
         <el-form-item label="商品名称">
-          <el-input v-model="food_info.name"></el-input>
+          <el-input v-model="food_info.name" placeholder="请输入商品名称"></el-input>
         </el-form-item>
         <el-form-item label="商品类型">
-          <el-select style="width: 320px"
-            v-model="food_info.type_value"
+          <el-select style="width: 360px"
+            v-model="food_info.type"
             filterable
             allow-create
             default-first-option
@@ -43,10 +43,20 @@
 
         </el-form-item>
         <el-form-item label="商品图片">
-          <el-button>点击上传</el-button>
+          <el-upload
+            class="upload-demo"
+            drag
+            action="http://localhost:8000/upload/image"
+            :onSuccess="uploadSuccess"
+            multiple
+            >
+            <i class="el-icon-upload"></i>
+            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+          </el-upload>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary">发布</el-button>
+          <el-button type="primary" v-on:click="launch">发布</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -60,13 +70,15 @@
       components:{restNavi},
       data() {
         return {
+
           date1: '',
           date2: '',
           food_info:{
+            image:'',
             name:'',
             price:0.0,
             num:0,
-            type_value:[],
+            type:'',
             type_list:[{
               value:'1',
               label:'主食'
@@ -82,6 +94,17 @@
             }],
           }
         }
+      },
+      methods:{
+        uploadSuccess(response, file, fileList) {
+          console.log("uploadSuccess");
+          this.food_info.image += 'http://localhost:8000/';
+          this.food_info.image += response;
+          console.log("this.proof:" + this.food_info.image);
+        },
+        launch() {
+
+        }
       }
     }
 </script>
@@ -90,6 +113,6 @@
   .main-body{
     margin-top: 40px;
     margin-left: 20px;
-    width: 400px;
+    width: 440px;
   }
 </style>

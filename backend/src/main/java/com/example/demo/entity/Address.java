@@ -21,14 +21,17 @@ public class Address {
     @JoinColumn(name="email",referencedColumnName="email") // 外键设置为email
     private Member member;
 
+    private String district;
+
     private String address;
 
     public Address(){
 
     }
 
-    public Address(Member member, String address) {
+    public Address(Member member, String district, String address) {
         this.member = member;
+        this.district = district;
         this.address = address;
     }
 
@@ -46,6 +49,14 @@ public class Address {
 
     public void setMember(Member member) {
         this.member = member;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
     }
 
     public String getAddress() {

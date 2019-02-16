@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import com.example.demo.entity.Address;
+import com.example.demo.payloads.user.AddressResponse;
 import com.example.demo.payloads.user.MemberRegisterRequest;
 import com.example.demo.service.member.AddressService;
 import com.example.demo.service.member.MemberService;
@@ -50,10 +52,10 @@ public class MemberController {
     }
 
     @GetMapping("/get_address")
-    public List<String> getAllAddress(String email) {
+    public List<AddressResponse> getAllAddress(String email) {
         return addressService.getAllAddress(email);
     }
 
     @GetMapping("/new_address")
-    public boolean addAddress(String email, String address){return addressService.addNewAddress(email, address);}
+    public boolean addAddress(String email, String district, String address){return addressService.addNewAddress(email, district, address);}
 }

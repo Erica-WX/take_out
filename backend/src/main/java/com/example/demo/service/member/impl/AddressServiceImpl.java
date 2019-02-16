@@ -3,6 +3,7 @@ package com.example.demo.service.member.impl;
 import com.example.demo.dao.member.AddressRepository;
 import com.example.demo.entity.Address;
 import com.example.demo.entity.Member;
+import com.example.demo.payloads.user.AddressResponse;
 import com.example.demo.service.member.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,17 +28,21 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public List<String> getAllAddress(String email) {
+    public List<AddressResponse> getAllAddress(String email) {
 
         Member member = new Member();
         member.setEmail(email);
 
         List<Address> addresses = addressRepository.findAllByMember(member);
-        ArrayList<String> addressList = new ArrayList<>();
 
-        if(addresses != null) {
+        ArrayList<AddressResponse> addressList = new ArrayList<>();
+
+        if(addresses != null){
             for(Address a: addresses) {
-                addressList.add(a.getAddress());
+                AddressResponse response = new AddressResponse();
+                response.setDistrict(a.getDistrict());
+                response.setAddress(a.getAddress());
+                addressList.add(response);
             }
         }
 
@@ -45,7 +50,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public boolean addNewAddress(String email, String address) {
+    public boolean addNewAddress(String email, String district, String address) {
 
         Member member = new Member();
         member.setEmail(email);
@@ -56,7 +61,7 @@ public class AddressServiceImpl implements AddressService {
                 return false;
             }
         }
-        Address newAddress = new Address(member, address);
+        Address newAddress = new Address(member, district, address);
         addressRepository.save(newAddress);
         return true;
     }
