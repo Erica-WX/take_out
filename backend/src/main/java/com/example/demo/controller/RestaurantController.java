@@ -1,10 +1,14 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Restaurant;
+import com.example.demo.payloads.restaurant.FindRestByDistResponse;
+import com.example.demo.payloads.restaurant.FoodListResponse;
 import com.example.demo.payloads.restaurant.NewFoodRequest;
 import com.example.demo.payloads.restaurant.RestRegisterRequest;
 import com.example.demo.service.restaurant.RestService;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @Author: 王轩
@@ -30,4 +34,10 @@ public class RestaurantController {
 
     @PostMapping("/new_food")
     public void addNewFood(@RequestBody NewFoodRequest foodRequest){restService.addNewFood(foodRequest);}
+
+    @GetMapping("/get_rests")
+    public List<FindRestByDistResponse> getRestByDistrict(String district){return restService.getRestByDistric(district);}
+
+    @GetMapping("/get_food_list")
+    public List<FoodListResponse> getFoodList(String id){return restService.getFoodList(id);}
 }

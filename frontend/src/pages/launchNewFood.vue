@@ -16,7 +16,7 @@
               v-for="item in food_info.type_list"
               :key="item.value"
               :label="item.label"
-              :value="item.value">
+              :value="item.label">
             </el-option>
           </el-select>
         </el-form-item>
@@ -70,10 +70,10 @@
       components:{restNavi},
       data() {
         return {
-
           date1: '',
           date2: '',
           food_info:{
+
             image:'',
             name:'',
             price:0.0,
@@ -103,7 +103,32 @@
           console.log("this.proof:" + this.food_info.image);
         },
         launch() {
+          let restId = localStorage.rest_id;
+          let name = this.food_info.name;
+          let type = this.food_info.type;
+          let price = this.food_info.price;
+          let amount = this.food_info.num;
+          let startDate = this.date1;
+          let endDate = this.date2;
+          let image = this.food_info.image;
 
+          this.$axios.post('/rest/new_food',{
+            restId: restId,
+            name: name,
+            type: type,
+            price: price,
+            amount: amount,
+            startDate: startDate,
+            endDate: endDate,
+            image: image
+          }).then(
+            function (response) {
+              alert("发布成功！");
+              window.location.reload();
+            }
+          ).catch(function (error) {
+
+          })
         }
       }
     }

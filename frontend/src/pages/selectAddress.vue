@@ -56,7 +56,7 @@
 </template>
 
 <script>
-  import memberNavi from '../components/memberNavi'
+  import memberNavi from '../components/memberTop'
   export default {
     name: "select-address",
     components: {memberNavi},

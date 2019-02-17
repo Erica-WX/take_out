@@ -68,8 +68,8 @@
       name: "rest-page",
       components:{restNavi},
       mounted:function () {
-        /*let rest = this.$route.params.rest;
-        this.rest_info = rest;*/
+        let rest = this.$route.params.rest;
+        this.rest_info = rest;
       },
       data() {
         return {

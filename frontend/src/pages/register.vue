@@ -195,12 +195,14 @@
           console.log(this.rest_form.value);
 
           let name = this.rest_form.rest_name;
+          let district = this.rest_form.district;
           let address = this.rest_form.address;
           let type = this.rest_form.value;
 
           let self = this;
           this.$axios.post('/rest/register',{
             name: name,
+            district:district,
             address: address,
             type: type
           }).then(

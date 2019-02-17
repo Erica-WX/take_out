@@ -1,7 +1,11 @@
 package com.example.demo.service.restaurant;
 
 import com.example.demo.entity.Restaurant;
+import com.example.demo.payloads.restaurant.FindRestByDistResponse;
+import com.example.demo.payloads.restaurant.FoodListResponse;
 import com.example.demo.payloads.restaurant.NewFoodRequest;
+
+import java.util.List;
 
 /**
  * @Author: 王轩
@@ -16,4 +20,8 @@ public interface RestService {
     Restaurant login(String id);
 
     void addNewFood(NewFoodRequest foodRequest);
+
+    List<FindRestByDistResponse> getRestByDistric(String district);
+
+    List<FoodListResponse> getFoodList(String id);
 }

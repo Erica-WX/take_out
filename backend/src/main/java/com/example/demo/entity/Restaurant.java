@@ -25,9 +25,9 @@ public class Restaurant {
 
     private boolean usable;
 
-    @OneToMany(cascade={CascadeType.MERGE},fetch= FetchType.LAZY)
+   /* @OneToMany(cascade={CascadeType.MERGE},fetch= FetchType.LAZY)
     @JoinColumn(name="id")
-    private Set<Food> foodSet;
+    private Set<Food> foodSet;*/
 
     public Restaurant() {
     }
@@ -89,11 +89,11 @@ public class Restaurant {
         this.usable = usable;
     }
 
-    public Set<Food> getFoodSet() {
+    /*public Set<Food> getFoodSet() {
         return foodSet;
     }
 
     public void setFoodSet(Set<Food> foodSet) {
         this.foodSet = foodSet;
-    }
+    }*/
 }

@@ -27,6 +27,8 @@ public class Member {
 
     private int level;
 
+    private double score;
+
     private boolean usable;
 
     public void setEmail(String email) {
@@ -69,6 +71,14 @@ public class Member {
         return usable;
     }
 
+    public double getScore() {
+        return score;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
+    }
+
     public Set<Address> getAddresses() {
         return addresses;
     }
@@ -77,11 +87,12 @@ public class Member {
         this.addresses = addresses;
     }
 
-    public Member(@Email String email, String username, String password, int level, boolean usable) {
+    public Member(@Email String email, String username, String password, int level, double score, boolean usable) {
         this.email = email;
         this.username = username;
         this.password = password;
         this.level = level;
+        this.score = score;
         this.usable = usable;
     }
 

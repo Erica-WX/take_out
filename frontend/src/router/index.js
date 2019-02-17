@@ -6,6 +6,7 @@ import restLogin from '@/pages/restLogin'
 import register from '@/pages/register'
 import selectAddress from '@/pages/selectAddress'
 import foodList from '@/pages/foodList'
+import restInfo from '@/pages/restInfo'
 import restPage from '@/pages/restPage'
 import launchNewFood from '@/pages/launchNewFood'
 
@@ -43,6 +44,11 @@ export default new Router({
       path: '/foodList',
       name: 'foodList',
       component: foodList
+    },
+    {
+      path: '/restInfo',
+      name: 'restInfo',
+      component: restInfo
     },
     {
       path: '/restPage',

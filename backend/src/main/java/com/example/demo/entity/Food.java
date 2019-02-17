@@ -19,7 +19,7 @@ public class Food {
 
     @NotNull
     @ManyToOne(cascade={CascadeType.MERGE}, fetch= FetchType.EAGER)
-    @JoinColumn(name="",referencedColumnName="id") // 外键设置为rest_id
+    @JoinColumn(name="restId") // 外键设置为rest_id
     private Restaurant rest;
 
     private String name;
@@ -39,7 +39,7 @@ public class Food {
     public Food() {
     }
 
-    public Food(@NotNull Restaurant rest, String name, String type, double price, int amount, LocalDate startDate, LocalDate endDate, String image) {
+    public Food(Restaurant rest, String name, String type, double price, int amount, LocalDate startDate, LocalDate endDate, String image) {
         this.rest = rest;
         this.name = name;
         this.type = type;
