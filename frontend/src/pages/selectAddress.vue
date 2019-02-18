@@ -139,7 +139,9 @@
         });
       },
       search(district, address) {
-        this.$router.push({name:'foodList',params:{district:district,address:address}})
+        localStorage.district = district;
+        localStorage.address = address;
+        this.$router.push({name:'foodList'})
       },
 
       split_address(){

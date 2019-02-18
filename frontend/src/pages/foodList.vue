@@ -57,9 +57,9 @@
       name: "food-list",
       components: {memberNavi},
       mounted:function () {
-        console.log(this.$route.params);
-        let district = this.$route.params.district;
-        let address = this.$route.params.address;
+
+        let district = localStorage.district;
+        let address = localStorage.address;
         this.now_address = district + " - " + address;
 
         let self = this;

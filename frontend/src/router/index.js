@@ -7,6 +7,7 @@ import register from '@/pages/register'
 import selectAddress from '@/pages/selectAddress'
 import foodList from '@/pages/foodList'
 import restInfo from '@/pages/restInfo'
+import basket from '@/pages/basket'
 import restPage from '@/pages/restPage'
 import launchNewFood from '@/pages/launchNewFood'
 
@@ -49,6 +50,11 @@ export default new Router({
       path: '/restInfo',
       name: 'restInfo',
       component: restInfo
+    },
+    {
+      path: '/basket',
+      name: 'basket',
+      component: basket
     },
     {
       path: '/restPage',

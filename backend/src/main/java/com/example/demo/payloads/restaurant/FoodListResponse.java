@@ -24,12 +24,16 @@ public class FoodListResponse {
     @JsonProperty("image")
     private String image;
 
+    @JsonProperty("num")
+    private int num;
+
     public FoodListResponse(String name, String type, double price, int amount, String image) {
         this.name = name;
         this.type = type;
         this.price = price;
         this.amount = amount;
         this.image = image;
+        this.num = 1;
     }
 
     public void setName(String name) {
