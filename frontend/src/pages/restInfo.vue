@@ -25,6 +25,14 @@
         console.log(this.id);
         console.log(this.name);
         this.get_food_list();
+
+        let basket = this.$route.params.basket;
+        console.log(basket);
+        if(basket === undefined){
+          basket = [];
+        }
+
+        this.basket = basket;
       },
       data() {
         return {
@@ -116,7 +124,7 @@
           /*console.log(this.basket);*/
         },
         get_basket() {
-          this.$router.push({name: 'basket', params:{basket: this.basket}});
+          this.$router.push({name: 'basket', params:{basket: this.basket, id: this.id}});
         }
       }
     }

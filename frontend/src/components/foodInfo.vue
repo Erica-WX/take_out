@@ -32,6 +32,7 @@
     export default {
       name: "food-info",
       props:["food_info"],
+
       data() {
           return {
             /*food_info:{

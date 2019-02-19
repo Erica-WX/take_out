@@ -74,7 +74,8 @@
           }
         ).catch(function (error) {
           console.log(error);
-        })
+        });
+
       },
       data() {
         return {

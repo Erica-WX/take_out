@@ -10,7 +10,7 @@ import restInfo from '@/pages/restInfo'
 import basket from '@/pages/basket'
 import restPage from '@/pages/restPage'
 import launchNewFood from '@/pages/launchNewFood'
-
+import launchSetMeal from '@/pages/launchSetMeal'
 
 Vue.use(Router)
 
@@ -65,6 +65,11 @@ export default new Router({
       path: '/launchNewFood',
       name: 'launchNewFood',
       component: launchNewFood
+    },
+    {
+      path: '/launchSetMeal',
+      name: 'launchSetMeal',
+      component: launchSetMeal
     }
   ]
 })
