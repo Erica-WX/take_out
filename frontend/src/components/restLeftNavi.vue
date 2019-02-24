@@ -23,7 +23,7 @@
         </template>
         <el-menu-item-group>
           <el-menu-item index="/launchNewFood">发布新品</el-menu-item>
-          <el-menu-item index="/UserSpace/LoanStatistics">发布优惠</el-menu-item>
+          <el-menu-item index="/launchSetMeal">发布优惠</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
       <el-submenu index="3" class="bar-main">
