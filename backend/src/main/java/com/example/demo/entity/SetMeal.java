@@ -1,9 +1,7 @@
 package com.example.demo.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * @Author: 王轩
@@ -18,6 +16,11 @@ public class SetMeal {
     @GeneratedValue(strategy = GenerationType.IDENTITY) //自增
     private int id;
 
+    @NotNull
+    @ManyToOne(cascade={CascadeType.MERGE}, fetch= FetchType.EAGER)
+    @JoinColumn(name="rest_id") // 外键设置为rest_id
+    private Restaurant restaurant;
+
     private String name;
 
     private double price;
@@ -29,8 +32,9 @@ public class SetMeal {
     public SetMeal() {
     }
 
-    public SetMeal(String name, double price, int amount, String image) {
+    public SetMeal(String name, Restaurant restaurant,  double price, int amount, String image) {
         this.name = name;
+        this.restaurant = restaurant;
         this.price = price;
         this.amount = amount;
         this.image = image;

@@ -1,10 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Restaurant;
-import com.example.demo.payloads.restaurant.FindRestByDistResponse;
-import com.example.demo.payloads.restaurant.FoodListResponse;
-import com.example.demo.payloads.restaurant.NewFoodRequest;
-import com.example.demo.payloads.restaurant.RestRegisterRequest;
+import com.example.demo.payloads.restaurant.*;
 import com.example.demo.service.restaurant.RestService;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,4 +37,9 @@ public class RestaurantController {
 
     @GetMapping("/get_food_list")
     public List<FoodListResponse> getFoodList(String id){return restService.getFoodList(id);}
+
+    @PostMapping("/new_setmeal")
+    public void setNewSetMeal(@RequestBody NewSetMealRequest setMealRequest){restService.setNewSetMeal(setMealRequest);}
+
+    //public List<>
 }

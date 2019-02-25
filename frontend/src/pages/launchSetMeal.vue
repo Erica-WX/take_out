@@ -8,6 +8,9 @@
           <el-form-item label="套餐价格">
             <el-input v-model="setmeal_info.price"></el-input>
           </el-form-item>
+          <el-form-item label="套餐数量">
+            <el-input v-model="setmeal_info.amount"></el-input>
+          </el-form-item>
           <div class="title">添加商品：</div>
           <el-table
             :data="setmeal_info.food_list"
@@ -40,7 +43,7 @@
               align="center"
             >
               <template slot-scope="scope">
-                <el-button size="mini" @click="add_food(scope.row.name, scope.row.price, scope.row.num)">加入套餐</el-button>
+                <el-button size="mini" @click="add_food(scope.row.id, scope.row.name, scope.row.price, scope.row.num)">加入套餐</el-button>
               </template>
             </el-table-column>
 
@@ -60,6 +63,7 @@
               label="名称"
               align="center"
             >
+              812697706
             </el-table-column>
             <el-table-column
               prop="price"
@@ -113,8 +117,9 @@
       data() {
         return {
           setmeal_info:{
-            name:'',
-            price:0.0,
+            name: '',
+            price: 0.0,
+            amount: 0,
             food_list: [
               {
                 name:'土豆',
@@ -136,7 +141,7 @@
           this.real_setmeal.image += response;
           console.log("this.proof:" + this.real_setmeal.image);
         },
-        add_food(name, price, num) {
+        add_food(id, name, price, num) {
 
           let isNew = true;
           for(let i = 0; i < this.real_setmeal.food_list.length; i++){
@@ -151,6 +156,7 @@
 
           if(isNew){
             let food = {
+              id: id,
               name: name,
               price: price,
               num: num
@@ -167,19 +173,24 @@
         },
 
         submit(){
+          let rest_id = localStorage.rest_id;
           let name = this.setmeal_info.name;
           let price = this.setmeal_info.price;
+          let amount = this.setmeal_info.amount;
           let image = this.real_setmeal.image;
           let food_list = this.real_setmeal.food_list;
 
-          this.$axios.post('',{
+          this.$axios.post('/rest/new_setmeal',{
             name: name,
+            restId: rest_id,
             price: price,
+            amount: amount,
             image:image,
-            food_list: food_list
+            foodList: food_list
           }).then(
             function (response) {
-              //console
+              alert("发布成功！");
+              window.location.reload();
             }
           ).catch(function (error) {
             console.log(error);

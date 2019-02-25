@@ -4,6 +4,7 @@ import com.example.demo.entity.Restaurant;
 import com.example.demo.payloads.restaurant.FindRestByDistResponse;
 import com.example.demo.payloads.restaurant.FoodListResponse;
 import com.example.demo.payloads.restaurant.NewFoodRequest;
+import com.example.demo.payloads.restaurant.NewSetMealRequest;
 
 import java.util.List;
 
@@ -24,4 +25,6 @@ public interface RestService {
     List<FindRestByDistResponse> getRestByDistric(String district);
 
     List<FoodListResponse> getFoodList(String id);
+
+    void setNewSetMeal(NewSetMealRequest setMealRequest);
 }

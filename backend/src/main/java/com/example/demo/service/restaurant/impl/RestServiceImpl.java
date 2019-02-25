@@ -2,11 +2,13 @@ package com.example.demo.service.restaurant.impl;
 
 import com.example.demo.dao.restaurant.FoodRepository;
 import com.example.demo.dao.restaurant.RestRepository;
+import com.example.demo.dao.restaurant.SetMealInfoRepository;
+import com.example.demo.dao.restaurant.SetMealRepository;
 import com.example.demo.entity.Food;
 import com.example.demo.entity.Restaurant;
-import com.example.demo.payloads.restaurant.FindRestByDistResponse;
-import com.example.demo.payloads.restaurant.FoodListResponse;
-import com.example.demo.payloads.restaurant.NewFoodRequest;
+import com.example.demo.entity.SetMeal;
+import com.example.demo.entity.SetMealInfo;
+import com.example.demo.payloads.restaurant.*;
 import com.example.demo.service.restaurant.RestService;
 import com.example.demo.util.RandomCodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +29,18 @@ public class RestServiceImpl implements RestService {
 
     private RestRepository restRepository;
     private FoodRepository foodRepository;
+    private SetMealRepository setMealRepository;
+    private SetMealInfoRepository setMealInfoRepository;
 
     @Autowired
     public RestServiceImpl(RestRepository restRepository,
-                           FoodRepository foodRepository){
+                           FoodRepository foodRepository,
+                           SetMealRepository setMealRepository,
+                           SetMealInfoRepository setMealInfoRepository){
         this.restRepository = restRepository;
         this.foodRepository = foodRepository;
+        this.setMealRepository = setMealRepository;
+        this.setMealInfoRepository = setMealInfoRepository;
     }
 
     @Override
@@ -114,11 +122,39 @@ public class RestServiceImpl implements RestService {
 
         if(foods != null) {
             for(Food f: foods) {
-                FoodListResponse response = new FoodListResponse(f.getName(), f.getType(), f.getPrice(), f.getAmount(), f.getImage());
+                FoodListResponse response = new FoodListResponse(f.getId(), f.getName(), f.getType(), f.getPrice(), f.getAmount(), f.getImage());
                 foodList.add(response);
             }
         }
 
         return foodList;
+    }
+
+    @Override
+    public void setNewSetMeal(NewSetMealRequest setMealRequest) {
+
+        String restId = setMealRequest.getRestId();
+        String s_name = setMealRequest.getName();
+        double s_price = setMealRequest.getPrice();
+        int amount = setMealRequest.getAmount();
+        String image = setMealRequest.getImage();
+
+        Restaurant restaurant = new Restaurant();
+        restaurant.setId(restId);
+
+        SetMeal setMeal = new SetMeal(s_name, restaurant, s_price, amount, image);
+        SetMeal newSetMeal = setMealRepository.save(setMeal);
+
+        List<FoodInfoInSetMeal> foodList = setMealRequest.getFoodList();
+        for(FoodInfoInSetMeal foodInfo: foodList) {
+            int f_id = foodInfo.getId();
+            int num = foodInfo.getNum();
+
+            Food food = new Food();
+            food.setId(f_id);
+
+            SetMealInfo setMealInfo = new SetMealInfo(newSetMeal, food, num);
+            setMealInfoRepository.save(setMealInfo);
+        }
     }
 }

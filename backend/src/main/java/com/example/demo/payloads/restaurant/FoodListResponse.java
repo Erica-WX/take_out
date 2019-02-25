@@ -9,6 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class FoodListResponse {
 
+    @JsonProperty("id")
+    private int id;
+
     @JsonProperty("name")
     private String name;
 
@@ -27,13 +30,18 @@ public class FoodListResponse {
     @JsonProperty("num")
     private int num;
 
-    public FoodListResponse(String name, String type, double price, int amount, String image) {
+    public FoodListResponse(int id, String name, String type, double price, int amount, String image) {
+        this.id = id;
         this.name = name;
         this.type = type;
         this.price = price;
         this.amount = amount;
         this.image = image;
         this.num = 1;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setName(String name) {
