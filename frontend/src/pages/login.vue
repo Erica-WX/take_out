@@ -17,7 +17,7 @@
           </el-form>
         </div>
         <div>
-          <p> <router-link :to="{name:'register',params:{index:'1'}}"><i> >>>没有账号，去注册</i>></router-link><!--<a v-on:click="go"><i> >>>没有账号，去注册</i></a>--></p>
+          <p> <router-link :to="{name:'register',params:{index:'1'}}"><i> >>>没有账号，去注册</i></router-link><!--<a v-on:click="go"><i> >>>没有账号，去注册</i></a>--></p>
         </div>
         <div class="enter">
           <el-button v-on:click="login">登录</el-button>

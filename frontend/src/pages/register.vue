@@ -18,6 +18,9 @@
                 <el-form-item label="邮箱">
                   <el-input v-model="member_form.email"></el-input>
                 </el-form-item>
+                <el-form-item label="手机">
+                  <el-input v-model="member_form.phone"></el-input>
+                </el-form-item>
                 <el-form-item label="密码">
                   <el-input type="password" v-model="member_form.password" autocomplete="off"></el-input>
                 </el-form-item>
@@ -97,7 +100,8 @@
             labelPosition:'top',
             username:'',
             email:'',
-            password:''
+            password:'',
+            phone:''
           },
           rest_form:{
             labelPosition:'top',
@@ -179,12 +183,14 @@
           let username = this.member_form.username;
           let email = this.member_form.email;
           let password = this.member_form.password;
+          let phone = this.member_form.phone;
           console.log(username, email, password);
 
           this.$axios.post("/user/register",{
             username: username,
             password: password,
-            email: email
+            email: email,
+            phone: phone
           }).then(
             function (response) {
               console.log(response);

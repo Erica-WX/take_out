@@ -14,16 +14,13 @@ import java.util.Set;
 public class Member {
 
     @Id
-    @Email
     private String email;
-    
-    @OneToMany(cascade={CascadeType.MERGE},fetch= FetchType.LAZY)
-    @JoinColumn(name="email")
-    private Set<Address> addresses;
 
     private String username;
 
     private String password;
+
+    private String phone;
 
     private int level;
 
@@ -75,22 +72,23 @@ public class Member {
         return score;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public void setScore(double score) {
         this.score = score;
     }
 
-    public Set<Address> getAddresses() {
-        return addresses;
-    }
-
-    public void setAddresses(Set<Address> addresses) {
-        this.addresses = addresses;
-    }
-
-    public Member(@Email String email, String username, String password, int level, double score, boolean usable) {
+    public Member(String email, String username, String password, String phone, int level, double score, boolean usable) {
         this.email = email;
         this.username = username;
         this.password = password;
+        this.phone = phone;
         this.level = level;
         this.score = score;
         this.usable = usable;

@@ -1,6 +1,6 @@
 <template>
     <restNavi paneltitle="我的餐厅 > 基本信息">
-      <div class="rest_info" v-show="!this.editable">
+      <div class="rest_info" v-show="!editable">
         <div class="info_item">
           餐厅名：{{this.rest_info.name}}
         </div>

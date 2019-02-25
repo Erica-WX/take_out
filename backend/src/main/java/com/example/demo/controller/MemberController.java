@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Address;
 import com.example.demo.payloads.user.AddressResponse;
+import com.example.demo.payloads.user.EditMemberInfoRequest;
+import com.example.demo.payloads.user.MemberInfoResponse;
 import com.example.demo.payloads.user.MemberRegisterRequest;
 import com.example.demo.service.member.AddressService;
 import com.example.demo.service.member.MemberService;
@@ -32,7 +34,7 @@ public class MemberController {
     @PostMapping("/register")
     public boolean register(@RequestBody MemberRegisterRequest memberRegisterRequest) {
 
-        return memberService.register(memberRegisterRequest.getUsername(), memberRegisterRequest.getPassword(), memberRegisterRequest.getEmail());
+        return memberService.register(memberRegisterRequest.getUsername(), memberRegisterRequest.getPassword(), memberRegisterRequest.getEmail(), memberRegisterRequest.getPhone());
 
     }
 
@@ -58,4 +60,14 @@ public class MemberController {
 
     @GetMapping("/new_address")
     public boolean addAddress(String email, String district, String address){return addressService.addNewAddress(email, district, address);}
+
+    @GetMapping("/get_info")
+    public MemberInfoResponse getInfo(String email){return memberService.getInfo(email);}
+
+    @RequestMapping("/edit_info")
+    public void saveInfo(@RequestBody EditMemberInfoRequest request){
+        System.out.println("in controller:");
+        System.out.println(request.getEmail());
+        memberService.saveInfo(request);
+    }
 }

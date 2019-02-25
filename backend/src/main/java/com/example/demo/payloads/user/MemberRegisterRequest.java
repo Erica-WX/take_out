@@ -10,6 +10,7 @@ public class MemberRegisterRequest {
     private String username;
     private String password;
     private String email;
+    private String phone;
 
     public String getUsername() {
         return username;
@@ -33,5 +34,13 @@ public class MemberRegisterRequest {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

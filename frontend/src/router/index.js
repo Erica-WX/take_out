@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import index from '@/pages/index'
 import login from '@/pages/login'
+import memberInfo from '@/pages/memberInfo'
 import restLogin from '@/pages/restLogin'
 import register from '@/pages/register'
 import selectAddress from '@/pages/selectAddress'
@@ -26,6 +27,11 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: login
+    },
+    {
+      path: '/memberInfo',
+      name: 'memberInfo',
+      component: memberInfo
     },
     {
       path: '/restLogin',

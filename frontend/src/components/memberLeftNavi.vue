@@ -8,28 +8,10 @@
         <i class="el-icon-location-outline bar-icon"></i>
         <span slot="title">附近餐厅</span>
       </el-menu-item>
-      <!--<el-submenu index="1" class="bar-main">
-        <template slot="title">
-          <i class="el-icon-location-outline bar-icon"></i>
-          <span>附近餐厅</span>
-        </template>
-        <el-menu-item-group>
-          <el-menu-item index="/restPage">基本信息</el-menu-item>
-          <el-menu-item index="/UserSpace/SchoolPerformance">餐厅菜单</el-menu-item>
-          &lt;!&ndash;<el-menu-item index="/UserSpace/FinancialStanding">财务状况</el-menu-item>
-          <el-menu-item index="/UserSpace/BasicInformation">基本信息</el-menu-item>&ndash;&gt;
-        </el-menu-item-group>
-      </el-submenu>-->
-      <el-submenu index="2" class="bar-main">
-        <template slot="title">
-          <i class="el-icon-menu bar-icon"></i>
-          <span>发布信息</span>
-        </template>
-        <el-menu-item-group>
-          <el-menu-item index="/launchNewFood">发布新品</el-menu-item>
-          <el-menu-item index="/UserSpace/LoanStatistics">发布优惠</el-menu-item>
-        </el-menu-item-group>
-      </el-submenu>
+      <el-menu-item index="/memberInfo" class="bar-main">
+        <i class="el-icon-menu bar-icon"></i>
+        <span slot="title">我的信息</span>
+      </el-menu-item>
       <el-submenu index="3" class="bar-main">
         <template slot="title">
           <i class="el-icon-menu bar-icon"></i>
