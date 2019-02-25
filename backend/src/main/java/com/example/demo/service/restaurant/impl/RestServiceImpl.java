@@ -1,19 +1,14 @@
 package com.example.demo.service.restaurant.impl;
 
-import com.example.demo.dao.restaurant.FoodRepository;
-import com.example.demo.dao.restaurant.RestRepository;
-import com.example.demo.dao.restaurant.SetMealInfoRepository;
-import com.example.demo.dao.restaurant.SetMealRepository;
-import com.example.demo.entity.Food;
-import com.example.demo.entity.Restaurant;
-import com.example.demo.entity.SetMeal;
-import com.example.demo.entity.SetMealInfo;
+import com.example.demo.dao.restaurant.*;
+import com.example.demo.entity.*;
 import com.example.demo.payloads.restaurant.*;
 import com.example.demo.service.restaurant.RestService;
 import com.example.demo.util.RandomCodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,16 +26,19 @@ public class RestServiceImpl implements RestService {
     private FoodRepository foodRepository;
     private SetMealRepository setMealRepository;
     private SetMealInfoRepository setMealInfoRepository;
+    private DiscountRepository discountRepository;
 
     @Autowired
     public RestServiceImpl(RestRepository restRepository,
                            FoodRepository foodRepository,
                            SetMealRepository setMealRepository,
-                           SetMealInfoRepository setMealInfoRepository){
+                           SetMealInfoRepository setMealInfoRepository,
+                           DiscountRepository discountRepository){
         this.restRepository = restRepository;
         this.foodRepository = foodRepository;
         this.setMealRepository = setMealRepository;
         this.setMealInfoRepository = setMealInfoRepository;
+        this.discountRepository = discountRepository;
     }
 
     @Override
@@ -156,5 +154,39 @@ public class RestServiceImpl implements RestService {
             SetMealInfo setMealInfo = new SetMealInfo(newSetMeal, food, num);
             setMealInfoRepository.save(setMealInfo);
         }
+    }
+
+    @Override
+    public void setDiscount(DiscountInfoResponse discountInfo) {
+
+        LocalDate startDate = discountInfo.getStartDate();
+        LocalDate endDate = discountInfo.getEndDate();
+        double fullMoney = discountInfo.getFullMoney();
+        double disMoney = discountInfo.getDisMoney();
+
+        Restaurant restaurant = new Restaurant();
+        restaurant.setId(discountInfo.getRestId());
+
+        Discount discount = new Discount(restaurant, fullMoney, disMoney ,startDate ,endDate);
+        discountRepository.save(discount);
+    }
+
+    @Override
+    public List<DiscountInfoResponse> getDiscountList(String restId) {
+        Restaurant restaurant = new Restaurant();
+        restaurant.setId(restId);
+        List<Discount> discounts = discountRepository.findByRestaurant(restaurant);
+
+        ArrayList<DiscountInfoResponse> disInfoList = new ArrayList<>();
+
+        if(discounts != null) {
+            for(Discount d: discounts) {
+                DiscountInfoResponse response = new DiscountInfoResponse(d.getFullMoney(), d.getDisMoney(), d.getStartDate(), d.getEndDate());
+                disInfoList.add(response);
+
+            }
+        }
+
+        return disInfoList;
     }
 }

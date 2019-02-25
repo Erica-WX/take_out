@@ -41,5 +41,11 @@ public class RestaurantController {
     @PostMapping("/new_setmeal")
     public void setNewSetMeal(@RequestBody NewSetMealRequest setMealRequest){restService.setNewSetMeal(setMealRequest);}
 
-    //public List<>
+    @GetMapping("/get_discount_list")
+    public List<DiscountInfoResponse> getDiscountList(String restId){return restService.getDiscountList(restId);}
+
+    @PostMapping("/set_discount")
+    public void setDiscount(@RequestBody DiscountInfoResponse discount){
+        restService.setDiscount(discount);
+    }
 }

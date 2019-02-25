@@ -2,6 +2,7 @@ package com.example.demo.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 /**
  * @Author: 王轩
@@ -24,13 +25,19 @@ public class Discount {
 
     private double disMoney;
 
+    private LocalDate startDate;
+
+    private LocalDate endDate;
+
     public Discount() {
     }
 
-    public Discount(@NotNull Restaurant restaurant, double fullMoney, double disMoney) {
+    public Discount(@NotNull Restaurant restaurant, double fullMoney, double disMoney, LocalDate startDate, LocalDate endDate) {
         this.restaurant = restaurant;
         this.fullMoney = fullMoney;
         this.disMoney = disMoney;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     public int getId() {
@@ -63,5 +70,21 @@ public class Discount {
 
     public void setDisMoney(double disMoney) {
         this.disMoney = disMoney;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 }
