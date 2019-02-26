@@ -16,4 +16,5 @@ public interface MemberService {
     boolean verify(String code);
     MemberInfoResponse getInfo(String email);
     void saveInfo(EditMemberInfoRequest request);
+    int getLevel(String email);
 }

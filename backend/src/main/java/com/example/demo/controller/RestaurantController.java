@@ -48,4 +48,10 @@ public class RestaurantController {
     public void setDiscount(@RequestBody DiscountInfoResponse discount){
         restService.setDiscount(discount);
     }
+
+    @PostMapping("/save_info")
+    public void saveInfo(@RequestBody EditRestInfoResquest resquest){restService.saveInfo(resquest);}
+
+    @PostMapping("/cal_order")
+    public OrderResponse calOrder(@RequestBody CalOrderRequest request){return restService.calOrder(request);}
 }

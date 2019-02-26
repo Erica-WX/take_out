@@ -26,7 +26,6 @@ import java.util.Optional;
 @Service
 public class MemberServiceImpl implements MemberService {
 
-
     private MemberRepository memberRepository;
     private AddressRepository addressRepository;
 
@@ -120,17 +119,13 @@ public class MemberServiceImpl implements MemberService {
     public void saveInfo(EditMemberInfoRequest request) {
 
         String email = request.getEmail();
-        System.out.println(email);
         String username = request.getUsername();
         String phone = request.getPhone();
 
-        Member member = new Member();
+        Member member = memberRepository.findByEmail(email).get();
         member.setEmail(email);
         member.setUsername(username);
         member.setPhone(phone);
-
-        System.out.println("in impl:");
-        System.out.println(member.getEmail());
 
         memberRepository.save(member);
 
@@ -143,5 +138,11 @@ public class MemberServiceImpl implements MemberService {
             }
             addressRepository.save(address);
         }
+    }
+
+    @Override
+    public int getLevel(String email) {
+        Member member = memberRepository.findByEmail(email).get();
+        return member.getLevel();
     }
 }

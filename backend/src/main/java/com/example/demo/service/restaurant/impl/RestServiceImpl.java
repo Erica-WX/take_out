@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @Author: 王轩
@@ -188,5 +186,115 @@ public class RestServiceImpl implements RestService {
         }
 
         return disInfoList;
+    }
+
+    @Override
+    public void saveInfo(EditRestInfoResquest resquest) {
+        String id = resquest.getId();
+        String name = resquest.getName();
+        String district = resquest.getDistrict();
+        String address = resquest.getAddress();
+        String type = resquest.getType();
+
+        Restaurant restaurant = restRepository.findById(id).get();
+        restaurant.setId(id);
+        restaurant.setName(name);
+        restaurant.setDistrict(district);
+        restaurant.setAddress(address);
+        restaurant.setType(type);
+
+        restRepository.save(restaurant);
+    }
+
+    @Override
+    public OrderResponse calOrder(CalOrderRequest request) {
+
+        int level = request.getLevel();
+        double sum = request.getSum();
+
+        //计算会员等级折扣
+        double disOfLevel = getDisBylevel(level);
+        double disMoneyOfLevel = sum * (1 - disOfLevel);
+
+        disMoneyOfLevel = (double)Math.round(disMoneyOfLevel * 100) / 100;
+
+        sum -= disMoneyOfLevel;
+
+        //获取当前店铺的优惠
+        String restId = request.getRestId();
+        List<Discount> discountList = discountRepository.getValidDiscount(restId, LocalDate.now());
+        ArrayList<DiscountInfo> discountInfos = new ArrayList<>();
+
+        for(Discount d: discountList) {
+           DiscountInfo discountInfo = new DiscountInfo();
+           discountInfo.setFullMoney(d.getFullMoney());
+           discountInfo.setDisMoney(d.getDisMoney());
+
+           discountInfos.add(discountInfo);
+        }
+
+        //对优惠进行降序排序
+        Collections.sort(discountInfos, new Comparator<DiscountInfo>() {
+            @Override
+            public int compare(DiscountInfo o1, DiscountInfo o2) {
+                return (int)(o2.getDisMoney() - o1.getDisMoney());
+            }
+        });
+
+        /*for(DiscountInfo d: discountInfos) {
+            System.out.println("满" + d.getFullMoney() + "减" + d.getDisMoney());
+        }*/
+
+        //计算满足该店铺的最大优惠
+        double fullMoney = 0;
+        double disMoneyByRest = 0;
+        for(DiscountInfo d: discountInfos) {
+            double full = d.getFullMoney();
+
+            if(sum < full) {
+                continue;
+            } else {
+                fullMoney = full;
+                disMoneyByRest = d.getDisMoney();
+                break;
+            }
+        }
+
+        sum -= disMoneyByRest;
+
+        OrderResponse response = new OrderResponse(restId, sum, fullMoney, disMoneyByRest, disMoneyOfLevel);
+
+        return response;
+    }
+
+
+
+    private double getDisBylevel(int level) {
+
+        double discount = 0;
+
+        switch (level){
+            case 1:
+                discount = 0.95;
+                break;
+
+            case 2:
+                discount = 0.9;
+                break;
+
+            case 3:
+                discount = 0.88;
+                break;
+
+            case 4:
+                discount = 0.85;
+                break;
+
+            case 5:
+                discount = 0.8;
+                break;
+        }
+
+        return discount;
     }
 }

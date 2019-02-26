@@ -103,6 +103,26 @@
         submit(){
           this.editable = false;
           this.rest_info = this.rest_form;
+
+          let id = localStorage.rest_id;
+          let name = this.rest_form.name;
+          let district = this.rest_form.district;
+          let address = this.rest_form.address;
+          let type = this.rest_form.type;
+
+          this.$axios.post('/rest/save_info',{
+            id: id,
+            name: name,
+            district: district,
+            address: address,
+            type: type
+          }).then(
+            function (response) {
+              alert("保存成功！");
+            }
+          ).catch(function (error) {
+            console.log(error);
+          })
         }
       }
     }

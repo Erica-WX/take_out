@@ -87,6 +87,7 @@
             alert("数量不足！");
           }else {
             let f = {
+              id: food.id,
               name: food.name,
               price: food.price * food.num,
               cost: food.price,
@@ -97,17 +98,20 @@
           }
         },
         check_basket(f) {
+
           if(this.basket.length === 0){
             this.basket.push(f);
           }else {
             let isNew = true;
             for(let i = 0; i < this.basket.length; i++) {
+
               if(this.basket[i].name === f.name) {
                 isNew = false;
                 let sum = this.basket[i].num + f.num;
                 if(sum <= f.amount){
                   this.basket[i].num = sum;
                   this.basket[i].price += f.price;
+                  break;
                 }else{
                   alert("数量不足！");
                   break;

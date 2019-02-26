@@ -28,4 +28,8 @@ public interface RestService {
     void setDiscount(DiscountInfoResponse discount);
 
     List<DiscountInfoResponse> getDiscountList(String restId);
+
+    void saveInfo(EditRestInfoResquest resquest);
+
+    OrderResponse calOrder(CalOrderRequest request);
 }

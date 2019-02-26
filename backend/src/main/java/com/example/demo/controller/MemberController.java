@@ -70,4 +70,9 @@ public class MemberController {
         System.out.println(request.getEmail());
         memberService.saveInfo(request);
     }
+
+    @GetMapping("/get_level")
+    public int getLevel(String email) {
+        return memberService.getLevel(email);
+    }
 }

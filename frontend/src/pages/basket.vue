@@ -1,5 +1,5 @@
 <template>
-  <memberNavi>
+  <memberNavi paneltitle="购物车">
     <div>
       <el-card style="width: 650px;margin-bottom: 40px">
         <div slot="header" class="clearfix">
@@ -24,7 +24,7 @@
               align="center"
             >
               <template  slot-scope="scope" >
-                <el-input-number v-show="scope.row.num" size="mini" v-model="scope.row.num"></el-input-number>
+                <el-input-number size="mini" v-model="scope.row.num"></el-input-number>
               </template>
             </el-table-column>
             <el-table-column
@@ -32,15 +32,26 @@
               label="小计(元)"
               align="center"
             >
-              <template  slot-scope="scope" v-if="scope.row.num" >
+              <template  slot-scope="scope" >
                 <span>{{scope.row.num * scope.row.cost}}</span>
-              </template>
-              <template  slot-scope="scope" v-if="!scope.row.num" >
-                <span>{{scope.row.price}}</span>
               </template>
             </el-table-column>
           </el-table>
-          <div style="font-size: 40px;color: red;margin-left: 73%;margin-top: 15px">
+          <div style="color: #7e7e7e;padding-left: 68%;margin-top: 20px">
+            <div align="center">
+              <div class="title">
+                配送费：3.5元
+              </div>
+              <div class="title">
+                会员折扣：-{{this.disMoneyByLevel}}元
+              </div>
+              <div class="title" v-show="fullMoney !== 0">
+                店铺满{{this.fullMoney}}减{{this.disMoneyByRest}}：-{{this.disMoneyByRest}}元
+              </div>
+            </div>
+
+          </div>
+          <div style="font-size: 40px;color: red;margin-left: 71%;margin-top: 15px">
             ￥{{this.all}}
           </div>
           <div style="margin-left: 80px;">
@@ -49,7 +60,7 @@
           </div>
           <div style="margin-left: 80px; display: flex;margin-top: 30px">
             <el-button v-on:click="submit">提交订单</el-button>
-            <el-button v-show="this.need_pay">付款</el-button>
+            <!--<el-button v-show="this.need_pay">付款</el-button>-->
           </div>
         </div>
       </el-card>
@@ -66,15 +77,8 @@
 
         this.id = this.$route.params.id;
 
-        let basket = this.$route.params.basket;
-        //console.log(basket);
-        let express = {
-          name: '配送费',
-          price: 3.5,
-        };
-        basket.push(express);
-        this.basket = basket;
-        console.log(express.price);
+        this.basket = this.$route.params.basket;
+
         this.cal_sum();
 
         this.now_address = localStorage.district + " " + localStorage.address;
@@ -87,10 +91,12 @@
           id:'',
           basket:[],
           all:0,
+          disMoneyByLevel: 0,
+          fullMoney: 0,
+          disMoneyByRest: 0,
           now_address:'',
           need_pay:false,
           time:'',
-          num_count:[]
         }
       },
       methods: {
@@ -101,7 +107,40 @@
             sum += basket[i].price;
           }
           console.log("sum:"+sum);
-          this.all = sum;
+
+          let email = localStorage.user_email;
+          let level = 1;
+          this.$axios.get('/user/get_level',{
+            params: {
+              email: email
+            }
+          }).then(
+            function (response) {
+              level = response.data;
+            }
+          ).catch(function (error) {
+            console.log(error);
+          });
+
+          let restId = this.id;
+          let self = this;
+          this.$axios.post('/rest/cal_order',{
+            restId: restId,
+            level: level,
+            sum: sum,
+          }).then(
+            function (response) {
+              console.log(response.data);
+              let order = response.data;
+              self.all = order.sum + 3.5;
+              self.disMoneyByLevel = order.disMoneyByLevel;
+              self.fullMoney = order.fullMoney;
+              self.disMoneyByRest = order.disMoneyByRest;
+            }
+          ).catch(function (error) {
+            console.log(error);
+          })
+
         },
 
         get_time(){
@@ -116,7 +155,27 @@
         },
 
         submit() {
-          this.need_pay = true;
+          let email = localStorage.user_email;
+          let restId = this.id;
+          let sum = this.all;
+          let foodList = this.basket;
+
+          let self = this;
+          this.$axios.post('/order/new_order',{
+            email: email,
+            restId: restId,
+            sum: sum,
+            foodList: foodList
+          }).then(
+            function (response) {
+              alert("订单提交完成！\n请在2分钟内在‘我的订单’中完成支付");
+              self.$router.push({name: 'foodList'});
+            }
+          ).catch(
+            function (error) {
+              console.log(error);
+            }
+          )
         },
 
         return_to_rest() {
@@ -138,4 +197,8 @@
 
 <style scoped>
 /*Vue中表格修改一项数据后，另一项如何实时变化*/
+
+  .title{
+    margin-bottom: 20px;
+  }
 </style>

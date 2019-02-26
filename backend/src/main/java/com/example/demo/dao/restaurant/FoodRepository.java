@@ -5,6 +5,7 @@ import com.example.demo.entity.Restaurant;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Author: 王轩
@@ -14,4 +15,6 @@ import java.util.List;
 public interface FoodRepository extends CrudRepository<Food, Integer> {
 
     List<Food> findByRest(Restaurant restaurant);
+
+    Optional<Food> findById(int id);
 }

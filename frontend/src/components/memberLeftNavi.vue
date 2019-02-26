@@ -12,16 +12,10 @@
         <i class="el-icon-menu bar-icon"></i>
         <span slot="title">我的信息</span>
       </el-menu-item>
-      <el-submenu index="3" class="bar-main">
-        <template slot="title">
-          <i class="el-icon-menu bar-icon"></i>
-          <span>送餐记录</span>
-        </template>
-        <el-menu-item-group class="bar-main">
-          <el-menu-item index="/UserSpace/InvestInformation">项目信息</el-menu-item>
-          <el-menu-item index="/UserSpace/InvestEarnings">投资统计</el-menu-item>
-        </el-menu-item-group>
-      </el-submenu>
+      <el-menu-item index="/order" class="bar-main">
+        <i class="el-icon-menu bar-icon"></i>
+        <span slot="title">我的订单</span>
+      </el-menu-item>
       <el-submenu index="4" class="bar-main">
         <template slot="title">
           <i class="el-icon-location bar-icon"></i>

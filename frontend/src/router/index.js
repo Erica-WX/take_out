@@ -3,12 +3,13 @@ import Router from 'vue-router'
 import index from '@/pages/index'
 import login from '@/pages/login'
 import memberInfo from '@/pages/memberInfo'
-import restLogin from '@/pages/restLogin'
 import register from '@/pages/register'
 import selectAddress from '@/pages/selectAddress'
 import foodList from '@/pages/foodList'
 import restInfo from '@/pages/restInfo'
 import basket from '@/pages/basket'
+import order from '@/pages/order'
+import restLogin from '@/pages/restLogin'
 import restPage from '@/pages/restPage'
 import launchNewFood from '@/pages/launchNewFood'
 import launchSetMeal from '@/pages/launchSetMeal'
@@ -62,6 +63,11 @@ export default new Router({
       path: '/basket',
       name: 'basket',
       component: basket
+    },
+    {
+      path: '/order',
+      name: 'order',
+      component: order
     },
     {
       path: '/restPage',
