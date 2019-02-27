@@ -215,7 +215,7 @@
             function (response) {
               console.log(response.data);
               let id = response.data;
-              alert("您餐厅的7位识别码是："+id+"\n 管理员信息审核完毕后即可使用该识别码登录。");
+              alert("您餐厅的7位识别码是："+id+"\n 你可使用该识别码登录");
               self.$router.push({name:'restLogin'});
             }
           ).catch(function (error) {

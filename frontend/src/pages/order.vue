@@ -51,7 +51,7 @@
                 align="center"
               >
                 <template slot-scope="scope">
-                  <el-button size="small">查看详情</el-button>
+                  <el-button size="small" v-on:click="check_paid(scope.row.id)">查看详情</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -182,6 +182,10 @@
         },
         check_not_paid(id) {
           this.$router.push({name: 'notPaidOrder', params: {id: id}});
+        },
+
+        check_paid(id) {
+          this.$router.push({name: 'paidOrder', params: {id: id}});
         },
 
         check_invalid(id) {

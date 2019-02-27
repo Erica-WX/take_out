@@ -53,7 +53,7 @@
         </div>
 
         <el-row style="padding-left: 35%;margin-top: 15px">
-          <el-button type="primary">确定支付</el-button>
+          <el-button type="primary" v-on:click="payOrder">确定支付</el-button>
           <el-button v-on:click="cancel_order">取消支付</el-button>
         </el-row>
       </div>
@@ -96,6 +96,23 @@
               self.disByRest = info.disByRest;
               self.fullMoney = info.fullMoney;
               self.sum = info.sum;
+            }
+          ).catch(function (error) {
+            console.log(error);
+          })
+        },
+
+        payOrder() {
+          let oid = this.oid;
+          let self = this;
+          this.$axios.get('/order/pay_order',{
+            params: {
+              oid: oid
+            }
+          }).then(
+            function () {
+              alert("订单支付成功！\n你可以在‘已支付订单’中查看该订单详情");
+              self.$router.push({name: 'order'});
             }
           ).catch(function (error) {
             console.log(error);

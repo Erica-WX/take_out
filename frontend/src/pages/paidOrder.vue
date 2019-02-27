@@ -53,7 +53,7 @@
       </div>
 
       <div style="font-size: 20px">
-        配送状态：<span style="color: #409EFF">商家备货中</span>
+        配送状态：<span style="color: #409EFF">{{this.express_state}}</span>
       </div>
 
       <el-row style="padding-left: 35%;margin-top: 25px">
@@ -72,6 +72,7 @@
     mounted: function () {
       this.oid = this.$route.params.id;
       this.get_order_info();
+      this.get_express_state();
     },
     data() {
       return {
@@ -81,6 +82,7 @@
         disByRest: 0,
         fullMoney: 0,
         sum: 0,
+        express_state: ''
       }
     },
 
@@ -100,6 +102,22 @@
             self.disByRest = info.disByRest;
             self.fullMoney = info.fullMoney;
             self.sum = info.sum;
+          }
+        ).catch(function (error) {
+          console.log(error);
+        })
+      },
+
+      get_express_state() {
+        let oid = this.oid;
+        let self = this;
+        this.$axios.get('/order/get_express_state',{
+          params: {
+            oid: oid
+          }
+        }).then(
+          function (response) {
+            self.express_state = response.data;
           }
         ).catch(function (error) {
           console.log(error);

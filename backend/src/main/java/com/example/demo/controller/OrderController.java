@@ -33,6 +33,9 @@ public class OrderController {
     @GetMapping("/get_not_paid")
     public List<GetOrderResponse> getNotPaidList(String email) {return orderService.getNotPaidOrders(email);}
 
+    @GetMapping("/get_complete")
+    public List<GetOrderResponse> getPaidList(String email) {return orderService.getCompleteOrders(email);}
+
     @GetMapping("/get_invalid")
     public List<GetOrderResponse> getInvalidList(String email) {return orderService.getInvalidOrders(email);}
 
@@ -41,4 +44,10 @@ public class OrderController {
 
     @GetMapping("/cancel_order")
     public void cancelOrder(int oid) {orderService.cancelOrder(oid);}
+
+    @GetMapping("/pay_order")
+    public void payOrder(int oid) {orderService.payOrder(oid);}
+
+    @GetMapping("/get_express_state")
+    public String getExpressState(int oid) {return orderService.getExpressState(oid);}
 }

@@ -1,6 +1,7 @@
 package com.example.demo.service.order.impl;
 
 import com.example.demo.dao.member.MemberRepository;
+import com.example.demo.dao.order.ExpressStateRepository;
 import com.example.demo.dao.order.OrderInfoRepository;
 import com.example.demo.dao.order.OrderRepository;
 import com.example.demo.dao.restaurant.FoodRepository;
@@ -33,18 +34,21 @@ public class OrderServiceImpl implements OrderService {
     private FoodRepository foodRepository;
     private OrderRepository orderRepository;
     private OrderInfoRepository orderInfoRepository;
+    private ExpressStateRepository expressStateRepository;
 
     @Autowired
     public OrderServiceImpl(MemberRepository memberRepository,
                             RestRepository restRepository,
                             FoodRepository foodRepository,
                             OrderRepository orderRepository,
-                            OrderInfoRepository orderInfoRepository) {
+                            OrderInfoRepository orderInfoRepository,
+                            ExpressStateRepository expressStateRepository) {
         this.memberRepository = memberRepository;
         this.restRepository = restRepository;
         this.foodRepository = foodRepository;
         this.orderRepository = orderRepository;
         this.orderInfoRepository = orderInfoRepository;
+        this.expressStateRepository = expressStateRepository;
     }
 
     @Override
@@ -116,7 +120,23 @@ public class OrderServiceImpl implements OrderService {
         Orders order = orderRepository.findById(oid).get();
         Member member = order.getMember();
 
+        double sum = order.getSum();
+        int score = (int)(sum + member.getScore());
+        member.setScore(score);
+        member.setLevel(calLevel(score));
 
+        double balance = member.getBalance();
+        balance -= sum;
+        member.setBalance(balance);
+
+        order.setPaid(true);
+        order.setValid(true);
+        orderRepository.save(order);
+
+        ExpressState expressState = new ExpressState();
+        expressState.setOid(oid);
+        expressState.setState("商家备货中");
+        expressStateRepository.save(expressState);
 
     }
 
@@ -157,6 +177,14 @@ public class OrderServiceImpl implements OrderService {
         return orderDetail;
     }
 
+    @Override
+    public String getExpressState(int oid) {
+
+        ExpressState expressState = expressStateRepository.findByOid(oid).get();
+        String state = expressState.getState();
+
+        return state;
+    }
 
 
     private ArrayList<GetOrderResponse> getList(List<Orders> orders) {
@@ -171,5 +199,24 @@ public class OrderServiceImpl implements OrderService {
             }
         }
         return orderList;
+    }
+
+    private int calLevel(int score) {
+
+        int level = 1;
+
+        if (score <= 100) {
+            level = 1;
+        }else if(score > 100 && score <= 300) {
+            level = 2;
+        }else if(score > 300 && score <= 700) {
+            level = 3;
+        }else if(score > 700 && score <= 1000) {
+            level = 4;
+        }else if(score > 1000) {
+            level = 5;
+        }
+
+        return level;
     }
 }
