@@ -30,6 +30,9 @@ public class FoodListResponse {
     @JsonProperty("num")
     private int num;
 
+    public FoodListResponse() {
+    }
+
     public FoodListResponse(int id, String name, String type, double price, int amount, String image) {
         this.id = id;
         this.name = name;
@@ -62,5 +65,9 @@ public class FoodListResponse {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
     }
 }

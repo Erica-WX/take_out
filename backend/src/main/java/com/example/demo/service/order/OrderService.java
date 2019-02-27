@@ -2,6 +2,7 @@ package com.example.demo.service.order;
 
 import com.example.demo.payloads.order.NewOrderRequest;
 import com.example.demo.payloads.order.GetOrderResponse;
+import com.example.demo.payloads.order.OrderDetailResponse;
 
 import java.util.List;
 
@@ -19,4 +20,10 @@ public interface OrderService {
     List<GetOrderResponse> getCompleteOrders(String email);
 
     List<GetOrderResponse> getInvalidOrders(String email);
+
+    void payOrder(int oid);
+
+    void cancelOrder(int oid);
+
+    OrderDetailResponse getOrderDetail(int oid);
 }

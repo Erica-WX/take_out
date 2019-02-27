@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.payloads.order.NewOrderRequest;
 import com.example.demo.payloads.order.GetOrderResponse;
+import com.example.demo.payloads.order.OrderDetailResponse;
 import com.example.demo.service.order.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -34,4 +35,10 @@ public class OrderController {
 
     @GetMapping("/get_invalid")
     public List<GetOrderResponse> getInvalidList(String email) {return orderService.getInvalidOrders(email);}
+
+    @GetMapping("/get_order_detail")
+    public OrderDetailResponse getOrderDetail(int oid) {return orderService.getOrderDetail(oid);}
+
+    @GetMapping("/cancel_order")
+    public void cancelOrder(int oid) {orderService.cancelOrder(oid);}
 }

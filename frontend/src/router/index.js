@@ -9,6 +9,9 @@ import foodList from '@/pages/foodList'
 import restInfo from '@/pages/restInfo'
 import basket from '@/pages/basket'
 import order from '@/pages/order'
+import notPaidOrder from '@/pages/notPaidOrder'
+import paidOrder from '@/pages/paidOrder'
+import invalidOrder from '@/pages/invalidOrder'
 import restLogin from '@/pages/restLogin'
 import restPage from '@/pages/restPage'
 import launchNewFood from '@/pages/launchNewFood'
@@ -68,6 +71,21 @@ export default new Router({
       path: '/order',
       name: 'order',
       component: order
+    },
+    {
+      path: '/notPaidOrder',
+      name: 'notPaidOrder',
+      component: notPaidOrder
+    },
+    {
+      path: '/paidOrder',
+      name: 'paidOrder',
+      component: paidOrder
+    },
+    {
+      path: '/invalidOrder',
+      name: 'invalidOrder',
+      component: invalidOrder
     },
     {
       path: '/restPage',

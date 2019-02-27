@@ -8,6 +8,8 @@ import com.example.demo.dao.restaurant.RestRepository;
 import com.example.demo.entity.*;
 import com.example.demo.payloads.order.NewOrderRequest;
 import com.example.demo.payloads.order.GetOrderResponse;
+import com.example.demo.payloads.order.OrderDetailResponse;
+import com.example.demo.payloads.restaurant.FoodListResponse;
 import com.example.demo.service.order.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,16 +52,21 @@ public class OrderServiceImpl implements OrderService {
         String email = request.getEmail();
         String restId = request.getRestId();
         double sum = request.getSum();
+        double disBylevel = request.getDisByLevel();
+        double disByRest = request.getDisByRest();
+        double fullMoney = request.getFullMoney();
         LocalDateTime orderDate = LocalDateTime.now();
 
         Member member = memberRepository.findByEmail(email).get();
         Restaurant restaurant = restRepository.findById(restId).get();
 
-        Orders orders = new Orders(member, restaurant, sum, true, false, orderDate);
+        // 保存订单
+        Orders orders = new Orders(member, restaurant, sum, disBylevel, disByRest, fullMoney, orderDate, true, false);
         Orders newOrder = orderRepository.save(orders);
 
         List<FoodInfo> foodList = request.getFoodList();
 
+        // 保存订单的详细条目
         for(FoodInfo f: foodList) {
 
             Food food = foodRepository.findById(f.getId()).get();
@@ -75,7 +82,7 @@ public class OrderServiceImpl implements OrderService {
 
             public void run() {
                 if(!newOrder.isPaid()) {
-                    newOrder.setValid(false);
+                    newOrder.setValid(false); // 取消订单
                     orderRepository.save(newOrder);
                 }
             }
@@ -103,6 +110,54 @@ public class OrderServiceImpl implements OrderService {
         List<Orders> orders = orderRepository.getInvalidList(email);
         return getList(orders);
     }
+
+    @Override
+    public void payOrder(int oid) {
+        Orders order = orderRepository.findById(oid).get();
+        Member member = order.getMember();
+
+
+
+    }
+
+    @Override
+    public void cancelOrder(int oid) {
+        Orders order = orderRepository.findById(oid).get();
+        order.setValid(false);
+        order.setPaid(false);
+        orderRepository.save(order);
+    }
+
+    @Override
+    public OrderDetailResponse getOrderDetail(int oid) {
+
+        Orders order = orderRepository.findById(oid).get();
+
+        double sum = order.getSum();
+        double disByLevel = order.getDisByLevel();
+        double disByRest = order.getDisByRest();
+        double fullMoney = order.getFullMoney();
+
+        List<OrderInfo> orderInfos = orderInfoRepository.findByOrder(order);
+        ArrayList<FoodListResponse> foodList = new ArrayList<>();
+        for(OrderInfo o: orderInfos) {
+            FoodListResponse response = new FoodListResponse();
+
+            Food food = o.getFood();
+            response.setId(food.getId());
+            response.setName(food.getName());
+            response.setPrice(food.getPrice());
+            response.setNum(o.getNum());
+
+            foodList.add(response);
+        }
+
+        OrderDetailResponse orderDetail = new OrderDetailResponse(oid, sum, disByLevel, disByRest, fullMoney, foodList);
+
+        return orderDetail;
+    }
+
+
 
     private ArrayList<GetOrderResponse> getList(List<Orders> orders) {
         ArrayList<GetOrderResponse> orderList = new ArrayList<>();

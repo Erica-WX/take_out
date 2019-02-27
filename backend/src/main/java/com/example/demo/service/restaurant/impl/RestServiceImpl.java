@@ -43,7 +43,7 @@ public class RestServiceImpl implements RestService {
     public String register(String restName, String district,  String address, String type) {
 
         String id = getID();
-        Restaurant restaurant = new Restaurant(id, restName, district, address, type, false);
+        Restaurant restaurant = new Restaurant(id, restName, district, address, type, true);
         restRepository.save(restaurant);
         return id;
     }

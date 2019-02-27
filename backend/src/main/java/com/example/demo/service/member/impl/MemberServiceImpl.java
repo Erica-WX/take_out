@@ -48,7 +48,7 @@ public class MemberServiceImpl implements MemberService {
         Optional<Member> member = memberRepository.findByEmail(email);
         if(!member.isPresent()){
             //即表示email不存在
-            Member newMember = new Member(email,username,password,phone,1,0,true);
+            Member newMember = new Member(email,username,password,phone,1,0,10000,true);
 
             String randomCode = RandomCodeUtil.generateUniqueCode();
             registerMemberMap.put(randomCode, newMember);

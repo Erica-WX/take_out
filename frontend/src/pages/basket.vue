@@ -51,8 +51,10 @@
             </div>
 
           </div>
-          <div style="font-size: 40px;color: red;margin-left: 71%;margin-top: 15px">
-            ￥{{this.all}}
+          <div style="font-size: 40px;color: red;padding-left: 67%; margin-top: 10px">
+            <div align="center" style="width: 200px;">
+              ￥{{this.all}}
+            </div>
           </div>
           <div style="margin-left: 80px;">
             <p style="margin-top: 0"><span style=" font-size: 24px;color: #7e7e7e">收货地址：</span>{{this.now_address}},</p>
@@ -159,13 +161,19 @@
           let restId = this.id;
           let sum = this.all;
           let foodList = this.basket;
+          let disByLevel = this.disMoneyByLevel;
+          let disByRest = this.disMoneyByRest;
+          let fullMoney = this.fullMoney;
 
           let self = this;
           this.$axios.post('/order/new_order',{
             email: email,
             restId: restId,
             sum: sum,
-            foodList: foodList
+            foodList: foodList,
+            disByLevel: disByLevel,
+            disByRest: disByRest,
+            fullMoney: fullMoney
           }).then(
             function (response) {
               alert("订单提交完成！\n请在2分钟内在‘我的订单’中完成支付");

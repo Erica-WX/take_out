@@ -19,6 +19,12 @@ public class NewOrderRequest {
 
     private List<FoodInfo> foodList;
 
+    private double disByLevel;
+
+    private double disByRest;
+
+    private double fullMoney;
+
     public String getEmail() {
         return email;
     }
@@ -33,5 +39,17 @@ public class NewOrderRequest {
 
     public List<FoodInfo> getFoodList() {
         return foodList;
+    }
+
+    public double getDisByLevel() {
+        return disByLevel;
+    }
+
+    public double getDisByRest() {
+        return disByRest;
+    }
+
+    public double getFullMoney() {
+        return fullMoney;
     }
 }

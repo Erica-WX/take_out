@@ -29,6 +29,12 @@ public class Orders {
 
     private double sum;
 
+    private double disByLevel;
+
+    private double disByRest;
+
+    private double fullMoney;
+
     private LocalDateTime orderTime;
 
     private boolean isValid;
@@ -38,13 +44,16 @@ public class Orders {
     public Orders() {
     }
 
-    public Orders(@NotNull Member member, @NotNull Restaurant restaurant, double sum, boolean isValid, boolean isPaid, LocalDateTime orderTime) {
+    public Orders(@NotNull Member member, @NotNull Restaurant restaurant, double sum, double disByLevel, double disByRest, double fullMoney, LocalDateTime orderTime, boolean isValid, boolean isPaid) {
         this.member = member;
         this.restaurant = restaurant;
         this.sum = sum;
+        this.disByLevel = disByLevel;
+        this.disByRest = disByRest;
+        this.fullMoney = fullMoney;
+        this.orderTime = orderTime;
         this.isValid = isValid;
         this.isPaid = isPaid;
-        this.orderTime = orderTime;
     }
 
     public int getId() {
@@ -101,5 +110,29 @@ public class Orders {
 
     public void setOrderTime(LocalDateTime orderTime) {
         this.orderTime = orderTime;
+    }
+
+    public double getDisByLevel() {
+        return disByLevel;
+    }
+
+    public void setDisByLevel(double disByLevel) {
+        this.disByLevel = disByLevel;
+    }
+
+    public double getDisByRest() {
+        return disByRest;
+    }
+
+    public void setDisByRest(double disByRest) {
+        this.disByRest = disByRest;
+    }
+
+    public double getFullMoney() {
+        return fullMoney;
+    }
+
+    public void setFullMoney(double fullMoney) {
+        this.fullMoney = fullMoney;
     }
 }
