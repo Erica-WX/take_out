@@ -262,6 +262,8 @@ public class RestServiceImpl implements RestService {
 
         sum -= disMoneyByRest;
 
+        sum = (double)Math.round(sum * 100) /100;
+
         OrderResponse response = new OrderResponse(restId, sum, fullMoney, disMoneyByRest, disMoneyOfLevel);
 
         return response;

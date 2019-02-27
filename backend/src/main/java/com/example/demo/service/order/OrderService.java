@@ -1,7 +1,9 @@
 package com.example.demo.service.order;
 
+import com.example.demo.entity.Orders;
 import com.example.demo.payloads.order.NewOrderRequest;
 import com.example.demo.payloads.order.GetOrderResponse;
+import com.example.demo.payloads.order.OrderExpressResponse;
 import com.example.demo.payloads.order.OrderDetailResponse;
 
 import java.util.List;
@@ -21,9 +23,24 @@ public interface OrderService {
 
     List<GetOrderResponse> getInvalidOrders(String email);
 
-    void payOrder(int oid);
+    boolean payOrder(int oid);
 
-    void cancelOrder(int oid);
+    Orders cancelOrder(int oid);
 
     OrderDetailResponse getOrderDetail(int oid);
+
+    String getExpressState(int oid);
+
+    List<OrderExpressResponse> getNotReceiveOrders(String restId);
+
+    List<OrderExpressResponse> getNotDeliverOrders(String restId);
+
+    List<OrderExpressResponse> getDeliveredOrders(String restId);
+
+    void receiveOrder(int oid);
+
+    void deliverOrder(int oid);
+
+    void acceptOrder(int oid);
+
 }

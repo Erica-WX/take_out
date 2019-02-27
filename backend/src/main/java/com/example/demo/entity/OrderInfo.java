@@ -27,13 +27,16 @@ public class OrderInfo {
 
     private int num;
 
+    private boolean isValid;
+
     public OrderInfo() {
     }
 
-    public OrderInfo(@NotNull Orders order, @NotNull Food food, int num) {
+    public OrderInfo(@NotNull Orders order, @NotNull Food food, int num, boolean isValid) {
         this.order = order;
         this.food = food;
         this.num = num;
+        this.isValid = isValid;
     }
 
     public int getId() {
@@ -66,5 +69,13 @@ public class OrderInfo {
 
     public void setNum(int num) {
         this.num = num;
+    }
+
+    public boolean isValid() {
+        return isValid;
+    }
+
+    public void setValid(boolean valid) {
+        isValid = valid;
     }
 }

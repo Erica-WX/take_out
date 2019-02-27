@@ -27,16 +27,10 @@
           <el-menu-item index="/launchDiscount">发布优惠</el-menu-item>
         </el-menu-item-group>
       </el-submenu>
-      <el-submenu index="3" class="bar-main">
-        <template slot="title">
-          <i class="el-icon-menu bar-icon"></i>
-          <span>送餐记录</span>
-        </template>
-        <el-menu-item-group class="bar-main">
-          <el-menu-item index="/UserSpace/InvestInformation">项目信息</el-menu-item>
-          <el-menu-item index="/UserSpace/InvestEarnings">投资统计</el-menu-item>
-        </el-menu-item-group>
-      </el-submenu>
+      <el-menu-item index="/expressRecord" class="bar-main">
+        <i class="el-icon-menu bar-icon"></i>
+        <span slot="title">送餐记录</span>
+      </el-menu-item>
       <el-submenu index="4" class="bar-main">
         <template slot="title">
           <i class="el-icon-location bar-icon"></i>

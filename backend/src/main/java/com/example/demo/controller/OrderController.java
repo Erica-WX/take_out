@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.payloads.order.NewOrderRequest;
 import com.example.demo.payloads.order.GetOrderResponse;
+import com.example.demo.payloads.order.OrderExpressResponse;
 import com.example.demo.payloads.order.OrderDetailResponse;
 import com.example.demo.service.order.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +47,38 @@ public class OrderController {
     public void cancelOrder(int oid) {orderService.cancelOrder(oid);}
 
     @GetMapping("/pay_order")
-    public void payOrder(int oid) {orderService.payOrder(oid);}
+    public boolean payOrder(int oid) { return orderService.payOrder(oid);}
 
     @GetMapping("/get_express_state")
     public String getExpressState(int oid) {return orderService.getExpressState(oid);}
+
+    @GetMapping("/get_not_receive")
+    public List<OrderExpressResponse> getNotReceiveList(String restId) {return  orderService.getNotReceiveOrders(restId);}
+
+    @GetMapping("/get_not_deliver")
+    public List<OrderExpressResponse> getNotDeliverList(String restId) {return  orderService.getNotDeliverOrders(restId);}
+
+    @GetMapping("/get_delivered")
+    public List<OrderExpressResponse> getDeliveredList(String restId) {return  orderService.getDeliveredOrders(restId);}
+
+    /**
+     * 商家接单
+     * @param oid
+     */
+    @GetMapping("/receive_order")
+    public void receiveOrder(int oid) {orderService.receiveOrder(oid);}
+
+    /**
+     * 商家发货
+     * @param oid
+     */
+    @GetMapping("/deliver_order")
+    public void deliverOrder(int oid) {orderService.deliverOrder(oid);}
+
+    /**
+     * 会员确认收货
+     * @param oid
+     */
+    @GetMapping("/accept_order")
+    public void acceptOrder(int oid) {orderService.acceptOrder(oid);}
 }

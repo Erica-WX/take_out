@@ -9,6 +9,7 @@ import com.example.demo.dao.restaurant.RestRepository;
 import com.example.demo.entity.*;
 import com.example.demo.payloads.order.NewOrderRequest;
 import com.example.demo.payloads.order.GetOrderResponse;
+import com.example.demo.payloads.order.OrderExpressResponse;
 import com.example.demo.payloads.order.OrderDetailResponse;
 import com.example.demo.payloads.restaurant.FoodListResponse;
 import com.example.demo.service.order.OrderService;
@@ -67,6 +68,7 @@ public class OrderServiceImpl implements OrderService {
         // 保存订单
         Orders orders = new Orders(member, restaurant, sum, disBylevel, disByRest, fullMoney, orderDate, true, false);
         Orders newOrder = orderRepository.save(orders);
+        int oid = newOrder.getId();
 
         List<FoodInfo> foodList = request.getFoodList();
 
@@ -76,18 +78,27 @@ public class OrderServiceImpl implements OrderService {
             Food food = foodRepository.findById(f.getId()).get();
             int num = f.getNum();
 
-            OrderInfo orderInfo = new OrderInfo(newOrder, food, num);
+            // 减库存
+            int amount = food.getAmount();
+            amount -= num;
+            food.setAmount(amount);
+            foodRepository.save(food);
+
+            OrderInfo orderInfo = new OrderInfo(newOrder, food, num, true);
             orderInfoRepository.save(orderInfo);
         }
+
 
         // 倒计时3分钟
         Timer timer = new Timer();
         TimerTask task = new TimerTask() {
 
             public void run() {
-                if(!newOrder.isPaid()) {
-                    newOrder.setValid(false); // 取消订单
-                    orderRepository.save(newOrder);
+                Orders theOrder = orderRepository.findById(oid).get();
+                if(!theOrder.isPaid()) {
+                    // 取消订单
+                    theOrder = cancelOrder(oid);
+                    orderRepository.save(theOrder);
                 }
             }
         };
@@ -116,36 +127,59 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void payOrder(int oid) {
+    public boolean payOrder(int oid) {
         Orders order = orderRepository.findById(oid).get();
-        Member member = order.getMember();
+        if(!order.isValid()) {
+            return false;
+        }else {
+            Member member = order.getMember();
 
-        double sum = order.getSum();
-        int score = (int)(sum + member.getScore());
-        member.setScore(score);
-        member.setLevel(calLevel(score));
+            double sum = order.getSum();
+            int score = (int)(sum + member.getScore());
+            member.setScore(score);
+            member.setLevel(calLevel(score));
 
-        double balance = member.getBalance();
-        balance -= sum;
-        member.setBalance(balance);
+            double balance = member.getBalance();
+            balance -= sum;
+            member.setBalance(balance);
+            memberRepository.save(member);
 
-        order.setPaid(true);
-        order.setValid(true);
-        orderRepository.save(order);
+            order.setPaid(true);
+            order.setValid(true);
+            orderRepository.save(order);
 
-        ExpressState expressState = new ExpressState();
-        expressState.setOid(oid);
-        expressState.setState("商家备货中");
-        expressStateRepository.save(expressState);
+            ExpressState expressState = new ExpressState();
+            expressState.setOid(oid);
+            expressState.setState("等待商家接单");
+            expressStateRepository.save(expressState);
+            return true;
+        }
 
     }
 
     @Override
-    public void cancelOrder(int oid) {
+    public Orders cancelOrder(int oid) {
         Orders order = orderRepository.findById(oid).get();
         order.setValid(false);
         order.setPaid(false);
-        orderRepository.save(order);
+        Orders newOrder = orderRepository.save(order);
+
+        // 恢复库存
+        List<OrderInfo> orderInfos = orderInfoRepository.findByOrder(order);
+        for(OrderInfo o: orderInfos) {
+            Food food = o.getFood();
+            int num = o.getNum();
+            int amount = food.getAmount();
+            amount += num;
+            food.setAmount(amount);
+            foodRepository.save(food);
+
+            o.setValid(false);
+            orderInfoRepository.save(o);
+        }
+
+        return newOrder;
+
     }
 
     @Override
@@ -186,6 +220,47 @@ public class OrderServiceImpl implements OrderService {
         return state;
     }
 
+    @Override
+    public List<OrderExpressResponse> getNotReceiveOrders(String restId) {
+        List<Orders> orders = orderRepository.getPaidList(restId);
+        return getExpressList(orders, "等待商家接单");
+
+    }
+
+    @Override
+    public List<OrderExpressResponse> getNotDeliverOrders(String restId) {
+        List<Orders> orders = orderRepository.getPaidList(restId);
+        return getExpressList(orders, "等待商家发货");
+    }
+
+    @Override
+    public List<OrderExpressResponse> getDeliveredOrders(String restId) {
+        List<Orders> orders = orderRepository.getPaidList(restId);
+        return getExpressList(orders, "配送中");
+    }
+
+    @Override
+    public void receiveOrder(int oid) {
+
+        ExpressState state = expressStateRepository.findByOid(oid).get();
+        state.setState("等待商家发货");
+        expressStateRepository.save(state);
+    }
+
+    @Override
+    public void deliverOrder(int oid) {
+        ExpressState state = expressStateRepository.findByOid(oid).get();
+        state.setState("配送中");
+        expressStateRepository.save(state);
+    }
+
+    @Override
+    public void acceptOrder(int oid) {
+        ExpressState state = expressStateRepository.findByOid(oid).get();
+        state.setState("已送达");
+        expressStateRepository.save(state);
+    }
+
 
     private ArrayList<GetOrderResponse> getList(List<Orders> orders) {
         ArrayList<GetOrderResponse> orderList = new ArrayList<>();
@@ -198,6 +273,33 @@ public class OrderServiceImpl implements OrderService {
                 orderList.add(response);
             }
         }
+        return orderList;
+    }
+
+    private ArrayList<OrderExpressResponse> getExpressList(List<Orders> orders, String info) {
+        ArrayList<OrderExpressResponse> orderList = new ArrayList<>();
+
+        for(Orders o: orders) {
+            int oid = o.getId();
+            ExpressState state = expressStateRepository.findByOid(oid).get();
+            if(state.getState().equals(info)) {
+                List<OrderInfo> orderInfos = orderInfoRepository.findByOrder(o);
+                ArrayList<FoodInfo> foodList = new ArrayList<>();
+                for(OrderInfo o2: orderInfos) {
+                    Food food = o2.getFood();
+                    FoodInfo foodInfo = new FoodInfo();
+                    foodInfo.setId(food.getId());
+                    foodInfo.setName(food.getName());
+                    foodInfo.setCost(food.getPrice());
+                    foodInfo.setNum(o2.getNum());
+
+                    foodList.add(foodInfo);
+                }
+                OrderExpressResponse response = new OrderExpressResponse(oid, o.getOrderTime(), o.getSum(), foodList, info);
+                orderList.add(response);
+            }
+        }
+
         return orderList;
     }
 

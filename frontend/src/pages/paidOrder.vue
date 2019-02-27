@@ -57,7 +57,7 @@
       </div>
 
       <el-row style="padding-left: 35%;margin-top: 25px">
-        <el-button type="primary">确认收货</el-button>
+        <el-button type="primary" v-on:click="accept_order">确认收货</el-button>
         <el-button v-on:click="cancel_order">退订</el-button>
       </el-row>
     </div>
@@ -118,6 +118,23 @@
         }).then(
           function (response) {
             self.express_state = response.data;
+          }
+        ).catch(function (error) {
+          console.log(error);
+        })
+      },
+
+      accept_order() {
+        let oid = this.oid;
+        let self = this;
+        this.$axios.get('/order/accept_order', {
+          params: {
+            oid: oid
+          }
+        }).then(
+          function (response) {
+            alert("收货成功！");
+            self.$router.push({name: 'paidOrder', params: {id: oid}});
           }
         ).catch(function (error) {
           console.log(error);

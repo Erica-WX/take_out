@@ -26,8 +26,8 @@ public class OrdersTest {
 
     @Test
     public void test(){
-        Orders order = orderRepository.findById(1).get();
-        order.setPaid(false);
+        Orders order = orderRepository.findById(5).get();
+        order.setPaid(true);
         order.setValid(true);
         orderRepository.save(order);
     }

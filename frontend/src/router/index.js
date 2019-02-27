@@ -17,6 +17,7 @@ import restPage from '@/pages/restPage'
 import launchNewFood from '@/pages/launchNewFood'
 import launchSetMeal from '@/pages/launchSetMeal'
 import launchDiscount from '@/pages/launchDiscount'
+import expressRecord from '@/pages/expressRecord'
 
 Vue.use(Router)
 
@@ -106,6 +107,11 @@ export default new Router({
       path: '/launchDiscount',
       name: 'launchDiscount',
       component: launchDiscount
+    },
+    {
+      path: '/expressRecord',
+      name: 'expressRecord',
+      component: expressRecord
     }
   ]
 })

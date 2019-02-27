@@ -110,8 +110,14 @@
               oid: oid
             }
           }).then(
-            function () {
-              alert("订单支付成功！\n你可以在‘已支付订单’中查看该订单详情");
+            function (response) {
+
+              let isPaid = response.data;
+              if(isPaid) {
+                alert("订单支付成功！\n你可以在‘已支付订单’中查看该订单详情");
+              }else {
+                alert("未在2分钟内完成支付\n订单已取消！");
+              }
               self.$router.push({name: 'order'});
             }
           ).catch(function (error) {

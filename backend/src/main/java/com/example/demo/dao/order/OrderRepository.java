@@ -25,4 +25,7 @@ public interface OrderRepository extends CrudRepository<Orders, Integer> {
 
     @Query(value = "select * from orders o where o.email = ?1 and o.is_valid = false", nativeQuery = true)
     List<Orders> getInvalidList(String email);
+
+    @Query(value = "select * from orders o where o.rest_id = ?1 and o.is_paid = true and o.is_valid = true", nativeQuery = true)
+    List<Orders> getPaidList(String restId);
 }
