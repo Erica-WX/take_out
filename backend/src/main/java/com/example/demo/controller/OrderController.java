@@ -81,4 +81,18 @@ public class OrderController {
      */
     @GetMapping("/accept_order")
     public void acceptOrder(int oid) {orderService.acceptOrder(oid);}
+
+    /**
+     * 会员退订商品
+     * @param oid
+     */
+    @GetMapping("/set_order_cancel")
+    public void setOrderCancel(int oid) {orderService.setOrderCancel(oid);}
+
+    /**
+     * 商家接受退订
+     * @param oid
+     */
+    @GetMapping("/agree_cancel")
+    public void agreeCancel(int oid) {orderService.agreeCancel(oid);}
 }

@@ -96,4 +96,5 @@ public class Restaurant {
     public void setFoodSet(Set<Food> foodSet) {
         this.foodSet = foodSet;
     }*/
+
 }

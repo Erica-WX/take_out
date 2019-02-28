@@ -41,10 +41,12 @@ public class Orders {
 
     private boolean isPaid;
 
+    private boolean isCancel;
+
     public Orders() {
     }
 
-    public Orders(@NotNull Member member, @NotNull Restaurant restaurant, double sum, double disByLevel, double disByRest, double fullMoney, LocalDateTime orderTime, boolean isValid, boolean isPaid) {
+    public Orders(@NotNull Member member, @NotNull Restaurant restaurant, double sum, double disByLevel, double disByRest, double fullMoney, LocalDateTime orderTime, boolean isValid, boolean isPaid, boolean isCancel) {
         this.member = member;
         this.restaurant = restaurant;
         this.sum = sum;
@@ -134,5 +136,13 @@ public class Orders {
 
     public void setFullMoney(double fullMoney) {
         this.fullMoney = fullMoney;
+    }
+
+    public boolean isCancel() {
+        return isCancel;
+    }
+
+    public void setCancel(boolean cancel) {
+        isCancel = cancel;
     }
 }

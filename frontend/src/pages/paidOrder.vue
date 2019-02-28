@@ -2,10 +2,10 @@
   <memberNavi paneltitle="已支付订单">
     <div style="width: 600px;margin-bottom: 50px">
       <div style="margin-top: 20px; margin-bottom: 20px; display: flex">
-        <div style="font-size: 25px;">
-          订单状态：<span style="color: #409EFF">已支付</span>
+        <div style="font-size: 25px;width: 250px">
+          订单状态：<span style="color: #409EFF" v-show="!isCancel">已支付</span><span style="color: #409EFF" v-show="isCancel">申请退货中</span>
         </div>
-        <div style="margin-left: 230px; margin-top: 10px">
+        <div style="margin-left: 210px; margin-top: 10px">
           <router-link :to="{name:'order'}" style="color: #409EFF">>>>返回订单列表</router-link>
         </div>
       </div>
@@ -56,8 +56,8 @@
         配送状态：<span style="color: #409EFF">{{this.express_state}}</span>
       </div>
 
-      <el-row style="padding-left: 35%;margin-top: 25px">
-        <el-button type="primary" v-on:click="accept_order">确认收货</el-button>
+      <el-row style="padding-left: 35%;margin-top: 25px" v-show="express_state !== '已送达' || express_state.isCancel">
+        <el-button type="primary"  v-on:click="accept_order">确认收货</el-button>
         <el-button v-on:click="cancel_order">退订</el-button>
       </el-row>
     </div>
@@ -82,7 +82,8 @@
         disByRest: 0,
         fullMoney: 0,
         sum: 0,
-        express_state: ''
+        express_state: '',
+        isCancel: false,
       }
     },
 
@@ -97,11 +98,13 @@
         }).then(
           function (response) {
             let info = response.data;
+            console.log(info);
             self.foodList = info.foodList;
             self.disByLevel = info.disByLevel;
             self.disByRest = info.disByRest;
             self.fullMoney = info.fullMoney;
             self.sum = info.sum;
+            self.isCancel = info.isCancel;
           }
         ).catch(function (error) {
           console.log(error);
@@ -134,7 +137,7 @@
         }).then(
           function (response) {
             alert("收货成功！");
-            self.$router.push({name: 'paidOrder', params: {id: oid}});
+            self.$router.push({name: 'order'});
           }
         ).catch(function (error) {
           console.log(error);
@@ -144,18 +147,57 @@
       cancel_order() {
         let oid = this.oid;
         let self = this;
-        this.$axios.get('/order/cancel_order', {
-          params: {
-            oid: oid
+
+        let tip = "";
+        let state = this.express_state;
+        if(state === "等待商家接单"){
+          tip = "是否退订？"
+        }else if(state === "等待商家发货"){
+          tip = "此时退订会扣除5%的费用，是否继续退订？";
+        }else if(state === "配送中"){
+          tip = "此时退订会扣除10%的费用，是否继续退订？";
+        }else if(state === "已送达"){
+          tip = "此时退订会扣除20%的费用，是否继续退订？";
+        }
+
+        this.$confirm(tip,'提示',{
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+
+          self.$axios.get('/order/set_order_cancel', {
+            params: {
+              oid: oid
+            }
+          }).then(
+            function (response) {
+
+              self.$alert('退订成功!\n你可以在失效订单中查看相关信息，钱款待商家确定后返还', '', {
+                confirmButtonText: '确定',
+                callback: action => {
+                  self.$router.push({name: 'order'});
+                }
+              });
+
+              /*self.$message({
+                type: 'success',
+                message:'退订成功!你可以在失效订单中查看相关信息，钱款待商家确定后返还'
+              });
+              self.$router.push({name: 'order'});*/
+            }
+          ).catch(function (error) {
+            console.log(error);
+          });
+
+      }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消退订'
+          });
           }
-        }).then(
-          function (response) {
-            alert("该订单已被取消\n你可以在已失效订单中查看");
-            self.$router.push({name: 'order'});
-          }
-        ).catch(function (error) {
-          console.log(error);
-        })
+
+        );
       }
     }
   }

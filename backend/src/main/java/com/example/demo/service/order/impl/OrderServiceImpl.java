@@ -66,7 +66,7 @@ public class OrderServiceImpl implements OrderService {
         Restaurant restaurant = restRepository.findById(restId).get();
 
         // 保存订单
-        Orders orders = new Orders(member, restaurant, sum, disBylevel, disByRest, fullMoney, orderDate, true, false);
+        Orders orders = new Orders(member, restaurant, sum, disBylevel, disByRest, fullMoney, orderDate, true, false, false);
         Orders newOrder = orderRepository.save(orders);
         int oid = newOrder.getId();
 
@@ -162,6 +162,7 @@ public class OrderServiceImpl implements OrderService {
         Orders order = orderRepository.findById(oid).get();
         order.setValid(false);
         order.setPaid(false);
+        order.setCancel(true);
         Orders newOrder = orderRepository.save(order);
 
         // 恢复库存
@@ -191,6 +192,7 @@ public class OrderServiceImpl implements OrderService {
         double disByLevel = order.getDisByLevel();
         double disByRest = order.getDisByRest();
         double fullMoney = order.getFullMoney();
+        boolean isCancel = order.isCancel();
 
         List<OrderInfo> orderInfos = orderInfoRepository.findByOrder(order);
         ArrayList<FoodListResponse> foodList = new ArrayList<>();
@@ -206,7 +208,7 @@ public class OrderServiceImpl implements OrderService {
             foodList.add(response);
         }
 
-        OrderDetailResponse orderDetail = new OrderDetailResponse(oid, sum, disByLevel, disByRest, fullMoney, foodList);
+        OrderDetailResponse orderDetail = new OrderDetailResponse(oid, sum, disByLevel, disByRest, fullMoney, foodList, isCancel);
 
         return orderDetail;
     }
@@ -236,7 +238,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<OrderExpressResponse> getDeliveredOrders(String restId) {
         List<Orders> orders = orderRepository.getPaidList(restId);
-        return getExpressList(orders, "配送中");
+        List<OrderExpressResponse> list1 = getExpressList(orders, "配送中");
+        List<OrderExpressResponse> list2 = getExpressList(orders, "已送达");
+        list1.addAll(list2);
+        return list1;
     }
 
     @Override
@@ -259,6 +264,55 @@ public class OrderServiceImpl implements OrderService {
         ExpressState state = expressStateRepository.findByOid(oid).get();
         state.setState("已送达");
         expressStateRepository.save(state);
+    }
+
+    @Override
+    public void setOrderCancel(int oid) {
+        Orders orders = orderRepository.findById(oid).get();
+        orders.setCancel(true);
+        orderRepository.save(orders);
+    }
+
+    @Override
+    public void agreeCancel(int oid) {
+        // 减库存，改状态
+        cancelOrder(oid);
+
+        Orders orders = orderRepository.findById(oid).get();
+
+        // 退款
+        ExpressState expressState = expressStateRepository.findByOid(oid).get();
+        String state = expressState.getState();
+        double percent = getOrderPercent(state);
+        double sum = orders.getSum();
+        double cancelMoney = twoBitDouble(sum * percent);
+        double returnMoney = twoBitDouble(sum - cancelMoney);
+
+        // 退款
+        Member member = orders.getMember();
+        double balance = member.getBalance();
+        balance += returnMoney;
+        member.setBalance(balance);
+
+        // 减积分
+        int score = (int)member.getScore();
+        score -= (int) returnMoney;
+        member.setScore(score);
+
+        // 更新等级
+        int level = calLevel(score);
+        member.setLevel(level);
+        memberRepository.save(member);
+
+        /*double moneyToRest = twoBitDouble(cancelMoney * 0.7);
+
+        Restaurant restaurant = orders.getRestaurant();
+        double money = restaurant.getMoney();
+        money -= sum * 0.7;
+        money += moneyToRest;
+        restaurant.setMoney(money);
+        restRepository.save(restaurant);*/
+
     }
 
 
@@ -295,7 +349,7 @@ public class OrderServiceImpl implements OrderService {
 
                     foodList.add(foodInfo);
                 }
-                OrderExpressResponse response = new OrderExpressResponse(oid, o.getOrderTime(), o.getSum(), foodList, info);
+                OrderExpressResponse response = new OrderExpressResponse(oid, o.getOrderTime(), o.getSum(), foodList, info, o.isCancel());
                 orderList.add(response);
             }
         }
@@ -320,5 +374,25 @@ public class OrderServiceImpl implements OrderService {
         }
 
         return level;
+    }
+
+    private double getOrderPercent(String state) {
+
+        double percent = 0;
+        if(state.equals("等待商家接单")) {
+            percent = 0;
+        }else if(state.equals("等待商家发货")) {
+            percent = 0.05;
+        }else if(state.equals("配送中")) {
+            percent = 0.1;
+        }else if(state.equals("已送达")) {
+            percent = 0.2;
+        }
+
+        return percent;
+    }
+
+    private double twoBitDouble(double num) {
+        return (double)Math.round(num * 100) / 100;
     }
 }

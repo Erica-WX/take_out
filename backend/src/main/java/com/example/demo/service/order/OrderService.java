@@ -43,4 +43,16 @@ public interface OrderService {
 
     void acceptOrder(int oid);
 
+    /**
+     * 会员想要退订,修改订单isCancel和配送状态
+     * @param oid
+     */
+    void setOrderCancel(int oid);
+
+    /**
+     * 商家同意退订,减库存，退款，改订单isValid和isPaid
+     * @param oid
+     */
+    void agreeCancel(int oid);
+
 }
