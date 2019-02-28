@@ -1,9 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.payloads.order.NewOrderRequest;
-import com.example.demo.payloads.order.GetOrderResponse;
-import com.example.demo.payloads.order.OrderExpressResponse;
-import com.example.demo.payloads.order.OrderDetailResponse;
+import com.example.demo.payloads.order.*;
 import com.example.demo.service.order.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -95,4 +92,7 @@ public class OrderController {
      */
     @GetMapping("/agree_cancel")
     public void agreeCancel(int oid) {orderService.agreeCancel(oid);}
+
+    @GetMapping("/get_member_statistics")
+    public List<MemberStatisticsResponse> getMemberStatistics(String email) {return orderService.getMemberStatistics(email);}
 }

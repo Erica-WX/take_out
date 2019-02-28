@@ -7,10 +7,7 @@ import com.example.demo.dao.order.OrderRepository;
 import com.example.demo.dao.restaurant.FoodRepository;
 import com.example.demo.dao.restaurant.RestRepository;
 import com.example.demo.entity.*;
-import com.example.demo.payloads.order.NewOrderRequest;
-import com.example.demo.payloads.order.GetOrderResponse;
-import com.example.demo.payloads.order.OrderExpressResponse;
-import com.example.demo.payloads.order.OrderDetailResponse;
+import com.example.demo.payloads.order.*;
 import com.example.demo.payloads.restaurant.FoodListResponse;
 import com.example.demo.service.order.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,7 +86,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
 
-        // 倒计时3分钟
+        // 倒计时2分钟
         Timer timer = new Timer();
         TimerTask task = new TimerTask() {
 
@@ -313,6 +310,44 @@ public class OrderServiceImpl implements OrderService {
         restaurant.setMoney(money);
         restRepository.save(restaurant);*/
 
+    }
+
+    @Override
+    public List<MemberStatisticsResponse> getMemberStatistics(String email) {
+
+        Member member = memberRepository.findByEmail(email).get();
+        List<Orders> orders = orderRepository.findByMember(member);
+
+        ArrayList<MemberStatisticsResponse> list = new ArrayList<>();
+        for(Orders o: orders) {
+            String restName = o.getRestaurant().getName();
+            String restType = o.getRestaurant().getType();
+            LocalDateTime orderTime = o.getOrderTime();
+            double sum = o.getSum();
+            boolean isCancel = o.isCancel();
+
+            List<OrderInfo> orderInfos = orderInfoRepository.findByOrder(o);
+            ArrayList<FoodListResponse> foodList = new ArrayList<>();
+            for(OrderInfo orderInfo: orderInfos) {
+                Food food = orderInfo.getFood();
+                int id = food.getId();
+                String name = food.getName();
+                int num = orderInfo.getNum();
+                double price = food.getPrice();
+                FoodListResponse foodListResponse = new FoodListResponse();
+                foodListResponse.setId(id);
+                foodListResponse.setName(name);
+                foodListResponse.setNum(num);
+                foodListResponse.setPrice(price);
+                foodList.add(foodListResponse);
+            }
+
+            MemberStatisticsResponse response = new MemberStatisticsResponse(restName, restType, orderTime, foodList, sum, isCancel);
+            list.add(response);
+        }
+
+
+        return list;
     }
 
 

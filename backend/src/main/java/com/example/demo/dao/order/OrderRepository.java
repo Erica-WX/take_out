@@ -1,6 +1,8 @@
 package com.example.demo.dao.order;
 
+import com.example.demo.entity.Member;
 import com.example.demo.entity.Orders;
+import com.example.demo.entity.Restaurant;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -16,6 +18,10 @@ public interface OrderRepository extends CrudRepository<Orders, Integer> {
 
     @Override
     Optional<Orders> findById(Integer integer);
+
+    List<Orders> findByMember(Member member);
+
+    List<Orders> findByRestaurant(Restaurant rest);
 
     @Query(value = "select * from orders o where o.email = ?1 and o.is_paid = false and o.is_valid = true", nativeQuery = true)
     List<Orders> getNotPaidList(String email);

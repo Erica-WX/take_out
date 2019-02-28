@@ -1,10 +1,7 @@
 package com.example.demo.service.order;
 
 import com.example.demo.entity.Orders;
-import com.example.demo.payloads.order.NewOrderRequest;
-import com.example.demo.payloads.order.GetOrderResponse;
-import com.example.demo.payloads.order.OrderExpressResponse;
-import com.example.demo.payloads.order.OrderDetailResponse;
+import com.example.demo.payloads.order.*;
 
 import java.util.List;
 
@@ -54,5 +51,7 @@ public interface OrderService {
      * @param oid
      */
     void agreeCancel(int oid);
+
+    List<MemberStatisticsResponse> getMemberStatistics(String email);
 
 }

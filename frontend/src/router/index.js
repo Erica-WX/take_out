@@ -12,6 +12,7 @@ import order from '@/pages/order'
 import notPaidOrder from '@/pages/notPaidOrder'
 import paidOrder from '@/pages/paidOrder'
 import invalidOrder from '@/pages/invalidOrder'
+import memberStatistics from '@/pages/memberStatistics'
 import restLogin from '@/pages/restLogin'
 import restPage from '@/pages/restPage'
 import launchNewFood from '@/pages/launchNewFood'
@@ -87,6 +88,11 @@ export default new Router({
       path: '/invalidOrder',
       name: 'invalidOrder',
       component: invalidOrder
+    },
+    {
+      path: '/memberStatistics',
+      name: 'memberStatistics',
+      component: memberStatistics
     },
     {
       path: '/restPage',

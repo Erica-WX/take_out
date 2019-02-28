@@ -1,6 +1,6 @@
 <template>
     <restNavi paneltitle="送餐记录">
-      <div style="padding-top: 30px; padding-left: 20px; width: 650px">
+      <div style="padding-top: 30px; padding-left: 20px; width: 750px">
         <el-tabs v-model="index" @tab-click="handleClick">
           <el-tab-pane label="待接单订单" name="1">
             <el-table
@@ -18,6 +18,7 @@
                 prop="foodList"
                 label="商品"
                 align="center"
+                width="170px"
               >
                 <template slot-scope="scope">
                   <p
@@ -32,7 +33,19 @@
                 prop="sum"
                 label="总价(元)"
                 align="center"
+                width="100px"
               >
+              </el-table-column>
+              <el-table-column
+                label="是否退订"
+                align="center"
+              >
+                <template slot-scope="scope">
+                  <div v-show="!scope.row.isCancel">
+                    否
+                  </div>
+                  <el-button v-show="scope.row.isCancel" size="small" v-on:click="agree_cancel(scope.row.oid)">接受退订</el-button>
+                </template>
               </el-table-column>
               <el-table-column
                 label="操作"
@@ -60,6 +73,7 @@
                 prop="foodList"
                 label="商品"
                 align="center"
+                width="170px"
               >
                 <template slot-scope="scope">
                   <p
@@ -74,7 +88,19 @@
                 prop="sum"
                 label="总价(元)"
                 align="center"
+                width="100px"
               >
+              </el-table-column>
+              <el-table-column
+                label="是否退订"
+                align="center"
+              >
+                <template slot-scope="scope">
+                  <div v-show="!scope.row.isCancel">
+                    否
+                  </div>
+                  <el-button v-show="scope.row.isCancel" size="small" v-on:click="agree_cancel(scope.row.oid)">接受退订</el-button>
+                </template>
               </el-table-column>
               <el-table-column
                 label="操作"
@@ -102,6 +128,7 @@
                 prop="foodList"
                 label="商品"
                 align="center"
+                width="170px"
               >
                 <template slot-scope="scope">
                   <p
@@ -116,6 +143,7 @@
                 prop="sum"
                 label="总价(元)"
                 align="center"
+                width="100px"
               >
               </el-table-column>
               <el-table-column
@@ -123,6 +151,17 @@
                 label="状态"
                 align="center"
               >
+              </el-table-column>
+              <el-table-column
+                label="是否退订"
+                align="center"
+              >
+                <template slot-scope="scope">
+                  <div v-show="!scope.row.isCancel">
+                    否
+                  </div>
+                  <el-button v-show="scope.row.isCancel" size="small" v-on:click="agree_cancel(scope.row.oid)">接受退订</el-button>
+                </template>
               </el-table-column>
             </el-table>
           </el-tab-pane>
@@ -239,7 +278,7 @@
             console.log(error);
           })
         },
-        deliver_order(oid) {
+        deliver_order(oid,) {
           this.$axios.get('/order/deliver_order',{
             params: {
               oid: oid
@@ -252,6 +291,27 @@
           ).catch(function (error) {
             console.log(error);
           })
+        },
+        agree_cancel(oid, index) {
+          let self = this;
+          this.$axios.get('/order/agree_cancel', {
+            params: {
+              oid: oid
+            }
+          }).then(
+            function (response) {
+              self.$alert('已接受退订，相关钱款已返还至用户账户中','', {
+                confirmButtonText: '确定',
+                callback: action => {
+                  window.location.reload();
+                }
+              });
+            }
+          ).catch(
+            function (error) {
+              console.log(error);
+            }
+          )
         }
       }
     }
