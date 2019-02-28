@@ -16,7 +16,11 @@
         <i class="el-icon-menu bar-icon"></i>
         <span slot="title">我的订单</span>
       </el-menu-item>
-      <el-submenu index="4" class="bar-main">
+      <el-menu-item index="/memberStatistics" class="bar-main">
+        <i class="el-icon-location bar-icon"></i>
+        <span slot="title">统计信息</span>
+      </el-menu-item>
+      <!--<el-submenu index="4" class="bar-main">
         <template slot="title">
           <i class="el-icon-location bar-icon"></i>
           <span>统计信息查询</span>
@@ -26,7 +30,7 @@
           <el-menu-item index="/UserSpace/AdvancedCheck">退订信息</el-menu-item>
           <el-menu-item index="/UserSpace/CrossCheck">财务信息</el-menu-item>
         </el-menu-item-group>
-      </el-submenu>
+      </el-submenu>-->
     </el-menu>
   </div>
 </template>
