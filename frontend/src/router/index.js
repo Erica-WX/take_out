@@ -23,6 +23,7 @@ import restStatistics from '@/pages/restStatistics'
 import adminLogin from '@/pages/adminLogin'
 import adminPage from '@/pages/adminPage'
 import approveModifyInfo from '@/pages/approveModifyInfo'
+import adminStatistics from '@/pages/adminStatistics'
 
 Vue.use(Router);
 
@@ -142,6 +143,11 @@ export default new Router({
       path: '/approveModifyInfo',
       name: 'approveModifyInfo',
       component: approveModifyInfo
+    },
+    {
+      path: '/adminStatistics',
+      name: 'adminStatistics',
+      component: adminStatistics
     },
   ]
 })

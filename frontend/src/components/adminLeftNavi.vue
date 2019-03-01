@@ -8,9 +8,9 @@
         <i class="el-icon-location-outline bar-icon"></i>
         <span slot="title">审核信息</span>
       </el-menu-item>
-      <el-menu-item index="/memberInfo" class="bar-main">
+      <el-menu-item index="/adminStatistics" class="bar-main">
         <i class="el-icon-menu bar-icon"></i>
-        <span slot="title">我的信息</span>
+        <span slot="title">统计信息</span>
       </el-menu-item>
       <el-menu-item index="/order" class="bar-main">
         <i class="el-icon-menu bar-icon"></i>
