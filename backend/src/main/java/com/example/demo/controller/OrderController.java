@@ -95,4 +95,7 @@ public class OrderController {
 
     @GetMapping("/get_member_statistics")
     public List<MemberStatisticsResponse> getMemberStatistics(String email) {return orderService.getMemberStatistics(email);}
+
+    @GetMapping("/get_rest_statistics")
+    public List<RestStatisticsResponse> getRestStatistics(String restId) {return orderService.getRestStatistics(restId);}
 }

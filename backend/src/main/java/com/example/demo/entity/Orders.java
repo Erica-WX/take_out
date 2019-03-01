@@ -27,6 +27,11 @@ public class Orders {
     @JoinColumn(name="restId") // 外键设置为rest_id
     private Restaurant restaurant;
 
+    @NotNull
+    @ManyToOne(cascade={CascadeType.MERGE}, fetch= FetchType.EAGER)
+    @JoinColumn(name="aId") // 外键设置为a_id
+    private Address address;
+
     private double sum;
 
     private double disByLevel;
@@ -46,9 +51,10 @@ public class Orders {
     public Orders() {
     }
 
-    public Orders(@NotNull Member member, @NotNull Restaurant restaurant, double sum, double disByLevel, double disByRest, double fullMoney, LocalDateTime orderTime, boolean isValid, boolean isPaid, boolean isCancel) {
+    public Orders(@NotNull Member member, @NotNull Restaurant restaurant, @NotNull Address address, double sum, double disByLevel, double disByRest, double fullMoney, LocalDateTime orderTime, boolean isValid, boolean isPaid, boolean isCancel) {
         this.member = member;
         this.restaurant = restaurant;
+        this.address = address;
         this.sum = sum;
         this.disByLevel = disByLevel;
         this.disByRest = disByRest;
@@ -56,6 +62,7 @@ public class Orders {
         this.orderTime = orderTime;
         this.isValid = isValid;
         this.isPaid = isPaid;
+        this.isCancel = isCancel;
     }
 
     public int getId() {
@@ -80,6 +87,14 @@ public class Orders {
 
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public double getSum() {

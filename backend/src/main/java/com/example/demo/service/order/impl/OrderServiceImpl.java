@@ -1,5 +1,6 @@
 package com.example.demo.service.order.impl;
 
+import com.example.demo.dao.member.AddressRepository;
 import com.example.demo.dao.member.MemberRepository;
 import com.example.demo.dao.order.ExpressStateRepository;
 import com.example.demo.dao.order.OrderInfoRepository;
@@ -33,6 +34,7 @@ public class OrderServiceImpl implements OrderService {
     private OrderRepository orderRepository;
     private OrderInfoRepository orderInfoRepository;
     private ExpressStateRepository expressStateRepository;
+    private AddressRepository addressRepository;
 
     @Autowired
     public OrderServiceImpl(MemberRepository memberRepository,
@@ -40,19 +42,22 @@ public class OrderServiceImpl implements OrderService {
                             FoodRepository foodRepository,
                             OrderRepository orderRepository,
                             OrderInfoRepository orderInfoRepository,
-                            ExpressStateRepository expressStateRepository) {
+                            ExpressStateRepository expressStateRepository,
+                            AddressRepository addressRepository) {
         this.memberRepository = memberRepository;
         this.restRepository = restRepository;
         this.foodRepository = foodRepository;
         this.orderRepository = orderRepository;
         this.orderInfoRepository = orderInfoRepository;
         this.expressStateRepository = expressStateRepository;
+        this.addressRepository = addressRepository;
     }
 
     @Override
     public void addNewOrder(NewOrderRequest request) {
         String email = request.getEmail();
         String restId = request.getRestId();
+        int aid = request.getAid();
         double sum = request.getSum();
         double disBylevel = request.getDisByLevel();
         double disByRest = request.getDisByRest();
@@ -61,9 +66,10 @@ public class OrderServiceImpl implements OrderService {
 
         Member member = memberRepository.findByEmail(email).get();
         Restaurant restaurant = restRepository.findById(restId).get();
+        Address address = addressRepository.findById(aid).get();
 
         // 保存订单
-        Orders orders = new Orders(member, restaurant, sum, disBylevel, disByRest, fullMoney, orderDate, true, false, false);
+        Orders orders = new Orders(member, restaurant, address, sum, disBylevel, disByRest, fullMoney, orderDate, true, false, false);
         Orders newOrder = orderRepository.save(orders);
         int oid = newOrder.getId();
 
@@ -159,7 +165,6 @@ public class OrderServiceImpl implements OrderService {
         Orders order = orderRepository.findById(oid).get();
         order.setValid(false);
         order.setPaid(false);
-        order.setCancel(true);
         Orders newOrder = orderRepository.save(order);
 
         // 恢复库存
@@ -350,6 +355,53 @@ public class OrderServiceImpl implements OrderService {
         return list;
     }
 
+    @Override
+    public List<RestStatisticsResponse> getRestStatistics(String restId) {
+
+        Restaurant rest = restRepository.findById(restId).get();
+        List<Orders> orders = orderRepository.findByRestaurant(rest);
+
+        ArrayList<RestStatisticsResponse> list = new ArrayList<>();
+        for(Orders o: orders) {
+            String username = o.getMember().getUsername();
+            Address address = o.getAddress();
+            LocalDateTime orderTime = o.getOrderTime();
+            String sendAddress = address.getDistrict() + " " + address.getAddress();
+            double sum = o.getSum();
+            boolean isCancel = o.isCancel();
+            double earning;
+            if(isCancel) {
+                ExpressState expressState = expressStateRepository.findByOid(o.getId()).get();
+                String state = expressState.getState();
+                double percent = getOrderPercent(state);
+                earning = twoBitDouble(percent * sum * 0.7);
+            }else {
+                earning = twoBitDouble(sum * 0.7);
+            }
+
+            List<OrderInfo> orderInfos = orderInfoRepository.findByOrder(o);
+            ArrayList<FoodListResponse> foodlist = new ArrayList<>();
+            for(OrderInfo orderInfo: orderInfos) {
+                Food food = orderInfo.getFood();
+                FoodListResponse foodListResponse = new FoodListResponse();
+                int id = food.getId();
+                String name = food.getName();
+                int num = orderInfo.getNum();
+                double price = food.getPrice();
+                foodListResponse.setName(name);
+                foodListResponse.setNum(num);
+                foodListResponse.setPrice(price);
+                foodListResponse.setId(id);
+                foodlist.add(foodListResponse);
+            }
+
+            RestStatisticsResponse response = new RestStatisticsResponse(username, sendAddress, orderTime, foodlist, sum, isCancel, earning);
+            list.add(response);
+        }
+
+        return list;
+    }
+
 
     private ArrayList<GetOrderResponse> getList(List<Orders> orders) {
         ArrayList<GetOrderResponse> orderList = new ArrayList<>();
@@ -394,17 +446,17 @@ public class OrderServiceImpl implements OrderService {
 
     private int calLevel(int score) {
 
-        int level = 1;
+        int level;
 
         if (score <= 100) {
             level = 1;
-        }else if(score > 100 && score <= 300) {
+        }else if(score <= 300) {
             level = 2;
-        }else if(score > 300 && score <= 700) {
+        }else if(score <= 700) {
             level = 3;
-        }else if(score > 700 && score <= 1000) {
+        }else if(score <= 1000) {
             level = 4;
-        }else if(score > 1000) {
+        }else{
             level = 5;
         }
 

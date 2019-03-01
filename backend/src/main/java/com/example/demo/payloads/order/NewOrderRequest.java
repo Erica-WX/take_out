@@ -25,6 +25,8 @@ public class NewOrderRequest {
 
     private double fullMoney;
 
+    private int aid;
+
     public String getEmail() {
         return email;
     }
@@ -51,5 +53,9 @@ public class NewOrderRequest {
 
     public double getFullMoney() {
         return fullMoney;
+    }
+
+    public int getAid() {
+        return aid;
     }
 }

@@ -164,6 +164,7 @@
           let disByLevel = this.disMoneyByLevel;
           let disByRest = this.disMoneyByRest;
           let fullMoney = this.fullMoney;
+          let aid = parseInt(localStorage.aid);
 
           let self = this;
           this.$axios.post('/order/new_order',{
@@ -173,7 +174,8 @@
             foodList: foodList,
             disByLevel: disByLevel,
             disByRest: disByRest,
-            fullMoney: fullMoney
+            fullMoney: fullMoney,
+            aid: aid
           }).then(
             function (response) {
               alert("订单提交完成！\n请在2分钟内在‘我的订单’中完成支付");

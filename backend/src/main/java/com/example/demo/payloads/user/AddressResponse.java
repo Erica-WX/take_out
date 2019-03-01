@@ -12,6 +12,9 @@ import java.io.Serializable;
  */
 public class AddressResponse{
 
+    @JsonProperty("aid")
+    private int aid;
+
     @JsonProperty("district")
     private String district;
 
@@ -24,5 +27,9 @@ public class AddressResponse{
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public void setAid(int aid) {
+        this.aid = aid;
     }
 }

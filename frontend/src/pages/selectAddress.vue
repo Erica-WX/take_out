@@ -12,7 +12,7 @@
               v-for="item in address_form.address_list"
               :key="item.value"
               :label="item.label"
-              :value="item.label"
+              :value="item.value"
             >
             </el-option>
           </el-select>
@@ -77,7 +77,7 @@
           let address_list = [];
           for(let i = 0; i < list.length; i++) {
             let a = {
-              value: (i+1) + "",
+              value: list[i].aid,
               label: list[i].district+ " " + list[i].address,
             };
             address_list.push(a);
@@ -145,12 +145,25 @@
       },
 
       split_address(){
-        let list = this.address_form.value.split(" ");
-        console.log("list:");
-        console.log(list);
-        let district = list[0];
-        let address = list[1];
-        this.search(district, address);
+
+        let aid = this.address_form.value;
+        localStorage.aid = aid;
+        let self = this;
+        this.$axios.get('/user/get_the_address', {
+          params: {
+            aid: aid
+          }
+        }).then(
+          function (response) {
+            let info = response.data;
+            let district = info.district;
+            let address = info.address;
+            self.search(district, address);
+          }
+        ).catch(function (error) {
+          console.log(error);
+        });
+
       }
     }
   }

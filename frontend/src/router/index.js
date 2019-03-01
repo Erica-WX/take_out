@@ -19,8 +19,9 @@ import launchNewFood from '@/pages/launchNewFood'
 import launchSetMeal from '@/pages/launchSetMeal'
 import launchDiscount from '@/pages/launchDiscount'
 import expressRecord from '@/pages/expressRecord'
+import restStatistics from '@/pages/restStatistics'
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   routes: [
@@ -118,6 +119,11 @@ export default new Router({
       path: '/expressRecord',
       name: 'expressRecord',
       component: expressRecord
+    },
+    {
+      path: '/restStatistics',
+      name: 'restStatistics',
+      component: restStatistics
     }
   ]
 })

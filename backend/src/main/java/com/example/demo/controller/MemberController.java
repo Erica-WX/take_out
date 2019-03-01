@@ -58,6 +58,9 @@ public class MemberController {
         return addressService.getAllAddress(email);
     }
 
+    @GetMapping("/get_the_address")
+    public AddressResponse getTheAddress(int aid) {return addressService.getTheAddress(aid);}
+
     @GetMapping("/new_address")
     public boolean addAddress(String email, String district, String address){return addressService.addNewAddress(email, district, address);}
 
@@ -75,4 +78,6 @@ public class MemberController {
     public int getLevel(String email) {
         return memberService.getLevel(email);
     }
+
+
 }

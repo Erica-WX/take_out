@@ -13,4 +13,5 @@ import java.util.List;
 public interface AddressService {
     List<AddressResponse> getAllAddress(String email);
     boolean addNewAddress(String email, String district, String address);
+    AddressResponse getTheAddress(int aid);
 }

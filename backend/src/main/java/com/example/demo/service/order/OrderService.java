@@ -54,4 +54,6 @@ public interface OrderService {
 
     List<MemberStatisticsResponse> getMemberStatistics(String email);
 
+    List<RestStatisticsResponse> getRestStatistics(String restId);
+
 }

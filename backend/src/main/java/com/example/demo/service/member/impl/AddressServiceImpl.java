@@ -42,6 +42,7 @@ public class AddressServiceImpl implements AddressService {
                 AddressResponse response = new AddressResponse();
                 response.setDistrict(a.getDistrict());
                 response.setAddress(a.getAddress());
+                response.setAid(a.getId());
                 addressList.add(response);
             }
         }
@@ -64,5 +65,16 @@ public class AddressServiceImpl implements AddressService {
         Address newAddress = new Address(member, district, address);
         addressRepository.save(newAddress);
         return true;
+    }
+
+    @Override
+    public AddressResponse getTheAddress(int aid) {
+        Address address = addressRepository.findById(aid).get();
+        AddressResponse response = new AddressResponse();
+        response.setAid(aid);
+        response.setAddress(address.getAddress());
+        response.setDistrict(address.getDistrict());
+
+        return response;
     }
 }

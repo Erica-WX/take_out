@@ -26,9 +26,10 @@ public class OrdersTest {
 
     @Test
     public void test(){
-        Orders order = orderRepository.findById(1).get();
-        order.setPaid(true);
-        order.setValid(true);
+        Orders order = orderRepository.findById(9).get();
+        /*order.setPaid(true);
+        order.setValid(true);*/
+        order.setCancel(false);
         orderRepository.save(order);
     }
 }

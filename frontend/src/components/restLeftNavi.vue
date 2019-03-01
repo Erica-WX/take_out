@@ -31,7 +31,7 @@
         <i class="el-icon-menu bar-icon"></i>
         <span slot="title">送餐记录</span>
       </el-menu-item>
-      <el-menu-item index="/" class="bar-main">
+      <el-menu-item index="/restStatistics" class="bar-main">
         <i class="el-icon-location bar-icon"></i>
         <span slot="title">统计信息</span>
       </el-menu-item>
