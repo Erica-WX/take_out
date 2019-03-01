@@ -68,8 +68,7 @@
       name: "rest-page",
       components:{restNavi},
       mounted:function () {
-        let rest = this.$route.params.rest;
-        this.rest_info = rest;
+        this.get_info();
       },
       data() {
         return {
@@ -94,22 +93,47 @@
         }
       },
       methods: {
+
+        get_info() {
+
+          let id = localStorage.rest_id;
+          let self = this;
+          this.$axios.get('/rest/login', {
+            params: {
+              id: id
+            }
+          }).then(
+            function (response) {
+              self.rest_info = response.data;
+            }
+          )
+
+        },
         edit(){
           this.editable = true;
-          this.rest_form = this.rest_info;
+
+          let obj = {
+            name: this.rest_info.name,
+            id: this.rest_info.id,
+            district: this.rest_info.district,
+            address: this.rest_info.address,
+            type: this.rest_info.type,
+            district_list: [],
+            type_list: []
+          };
+          this.rest_form = obj;
           this.rest_form.district_list = JSON.parse(localStorage.district_list);
           this.rest_form.type_list = JSON.parse(localStorage.type_list);
         },
         submit(){
           this.editable = false;
-          this.rest_info = this.rest_form;
-
           let id = localStorage.rest_id;
           let name = this.rest_form.name;
           let district = this.rest_form.district;
           let address = this.rest_form.address;
           let type = this.rest_form.type;
 
+          let self = this;
           this.$axios.post('/rest/save_info',{
             id: id,
             name: name,
@@ -118,7 +142,14 @@
             type: type
           }).then(
             function (response) {
-              alert("保存成功！");
+
+              self.$alert('信息待管理员审核完毕后呈现！','', {
+                confirmButtonText: '确定',
+                callback: action => {
+
+                }
+              });
+
             }
           ).catch(function (error) {
             console.log(error);

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -25,18 +26,21 @@ public class RestServiceImpl implements RestService {
     private SetMealRepository setMealRepository;
     private SetMealInfoRepository setMealInfoRepository;
     private DiscountRepository discountRepository;
+    private ModifyInfoRepository modifyInfoRepository;
 
     @Autowired
     public RestServiceImpl(RestRepository restRepository,
                            FoodRepository foodRepository,
                            SetMealRepository setMealRepository,
                            SetMealInfoRepository setMealInfoRepository,
-                           DiscountRepository discountRepository){
+                           DiscountRepository discountRepository,
+                           ModifyInfoRepository modifyInfoRepository){
         this.restRepository = restRepository;
         this.foodRepository = foodRepository;
         this.setMealRepository = setMealRepository;
         this.setMealInfoRepository = setMealInfoRepository;
         this.discountRepository = discountRepository;
+        this.modifyInfoRepository = modifyInfoRepository;
     }
 
     @Override
@@ -192,18 +196,16 @@ public class RestServiceImpl implements RestService {
     public void saveInfo(EditRestInfoResquest resquest) {
         String id = resquest.getId();
         String name = resquest.getName();
+        LocalDateTime requestTime = LocalDateTime.now();
         String district = resquest.getDistrict();
         String address = resquest.getAddress();
         String type = resquest.getType();
 
         Restaurant restaurant = restRepository.findById(id).get();
-        restaurant.setId(id);
-        restaurant.setName(name);
-        restaurant.setDistrict(district);
-        restaurant.setAddress(address);
-        restaurant.setType(type);
 
-        restRepository.save(restaurant);
+        ModifyInfo modifyInfo = new ModifyInfo(restaurant, name, requestTime, district, address, type);
+        modifyInfoRepository.save(modifyInfo);
+
     }
 
     @Override

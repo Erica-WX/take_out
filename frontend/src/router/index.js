@@ -20,6 +20,9 @@ import launchSetMeal from '@/pages/launchSetMeal'
 import launchDiscount from '@/pages/launchDiscount'
 import expressRecord from '@/pages/expressRecord'
 import restStatistics from '@/pages/restStatistics'
+import adminLogin from '@/pages/adminLogin'
+import adminPage from '@/pages/adminPage'
+import approveModifyInfo from '@/pages/approveModifyInfo'
 
 Vue.use(Router);
 
@@ -124,6 +127,21 @@ export default new Router({
       path: '/restStatistics',
       name: 'restStatistics',
       component: restStatistics
-    }
+    },
+    {
+      path: '/adminLogin',
+      name: 'adminLogin',
+      component: adminLogin
+    },
+    {
+      path: '/adminPage',
+      name: 'adminPage',
+      component: adminPage
+    },
+    {
+      path: '/approveModifyInfo',
+      name: 'approveModifyInfo',
+      component: approveModifyInfo
+    },
   ]
 })
