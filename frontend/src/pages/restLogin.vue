@@ -81,7 +81,7 @@
     height: 700px;
     background-image: url("/static/index-back.jpg");
     background-size:100% 100%;
-    border: 1px solid black;
+    border: 1px solid white;
     /*opacity: 0.35;*/
   }
 
@@ -117,7 +117,7 @@
 
 <style>
   .el-form-item__label{
-    color:white;
-    font-size: 16px;
+    color:white !important;
+    font-size: 16px !important;
   }
 </style>

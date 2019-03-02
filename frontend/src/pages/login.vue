@@ -42,6 +42,18 @@
         }
       },
       methods: {
+
+        test() {
+          this.$message({
+            message: '注销成功！',
+            type: 'success'
+          });
+
+
+
+          setTimeout("console.log('AAAA')", 1000);
+        },
+
         login() {
           let email = this.login_form.email;
           let password = this.login_form.password;
@@ -55,13 +67,24 @@
           }).then(
             function(response) {
               console.log(response.data);
-              if(response.data !== "") {
-                localStorage.user_email = email;
-                localStorage.username = response.data
-                self.$router.push({name:'selectAddress'});
+              if(response.data === ""){
+                self.$alert('用户名或者密码错误！', '', {
+                  confirmButtonText: '确定',
+                })
+              }else if(response.data === -1){
+                self.$alert('该用户已被注销！', '', {
+                  confirmButtonText: '确定',
+                })
               }else {
-                alert("用户名或者密码错误！");
+                localStorage.user_email = email;
+                localStorage.username = response.data;
+                self.$router.push({name:'selectAddress'});
               }
+              /*if(response.data !== "" && response.data !== "-1") {
+
+              }else {
+
+              }*/
             }
           ).catch(function(error){
 
@@ -79,7 +102,7 @@
     height: 700px;
     background-image: url("/static/index-back.jpg");
     background-size:100% 100%;
-    border: 1px solid black;
+    border: 1px solid white;
     /*opacity: 0.35;*/
   }
 
@@ -115,8 +138,8 @@
 <style>
 
   .el-form-item__label{
-    color:white;
-    font-size: 16px;
+    color:white !important;
+    font-size: 16px !important;
   }
   /*.el-form-item__label{
     color:white;

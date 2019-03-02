@@ -2,25 +2,12 @@
   <el-row>
     <el-col :span="4" >
       <div class="logo">
-        <div class="title"><i>Take-Out</i></div>
+        <div class="title"><i>Yummy</i></div>
       </div>
     </el-col>
     <el-col :span="20">
-      <div>
-        <el-menu :default-active="activeIndex"
-                 class="el-menu-demo"
-                 mode="horizontal"
-                 @select="handleSelect"
-                 background-color="#409EFF"
-                 text-color="#fff"
-                 active-text-color="#000000"
+      <div style="height: 60px; background-color: #409EFF">
 
-        >
-          <el-menu-item index="1">外卖</el-menu-item>
-          <el-menu-item index="2">登录</el-menu-item>
-          <el-menu-item index="3">注册</el-menu-item>
-
-        </el-menu>
       </div>
     </el-col>
   </el-row>
@@ -56,6 +43,7 @@
 
   .title{
     font-size: 30px;
+    color: white;
   }
 
   .title:hover{

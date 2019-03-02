@@ -24,7 +24,19 @@
               align="center"
             >
               <template  slot-scope="scope" >
-                <el-input-number size="mini" v-model="scope.row.num"></el-input-number>
+                <el-input-number
+                  size="mini"
+                  :min="1"
+                  v-model="scope.row.num"
+                ></el-input-number>
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="操作"
+              align="center"
+            >
+              <template slot-scope="scope">
+                <el-button plain type="danger" size="mini" @click="delete_food(scope.$index)">删除</el-button>
               </template>
             </el-table-column>
             <el-table-column
@@ -36,6 +48,7 @@
                 <span>{{scope.row.num * scope.row.cost}}</span>
               </template>
             </el-table-column>
+
           </el-table>
           <div style="color: #7e7e7e;padding-left: 68%;margin-top: 20px">
             <div align="center">
@@ -102,6 +115,11 @@
         }
       },
       methods: {
+
+        delete_food(index) {
+          this.basket.splice(index, 1);
+          console.log(this.basket);
+        },
         cal_sum() {
           let basket = this.basket;
           let sum = 0;

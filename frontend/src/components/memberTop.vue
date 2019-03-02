@@ -2,7 +2,7 @@
   <el-row>
     <el-col :span="4" class="c">
       <div class="logo">
-        <div class="title"><i>Take-Out</i></div>
+        <div class="title"><i>Yummy</i></div>
       </div>
     </el-col>
 
@@ -15,11 +15,12 @@
                  background-color="#409EFF"
                  text-color="#fff"
                  active-text-color="#000000"
+                 :router="routerBool"
 
         >
-          <el-menu-item index="1">个人中心</el-menu-item>
-          <el-menu-item index="2">登录</el-menu-item>
-          <el-menu-item index="3">注册</el-menu-item>
+          <el-menu-item index="/login">登出</el-menu-item>
+          <!--<el-menu-item index="2">登录</el-menu-item>
+          <el-menu-item index="3">注册</el-menu-item>-->
 
         </el-menu>
       </div>
@@ -32,12 +33,23 @@
     name: "member-top",
     data() {
       return {
-        activeIndex: '1',
+        activeIndex: '',
+        routerBool:true
       }
     },
     methods: {
       handleSelect(key, keyPath) {
-        console.log(key, keyPath);
+        console.log(key,keyPath);
+        if(key === "/login") {
+          this.logout();
+        }
+      },
+
+      logout() {
+        localStorage.user_email = "";
+        localStorage.address = "";
+        localStorage.district = "";
+        localStorage.username = "";
       }
     },
   }

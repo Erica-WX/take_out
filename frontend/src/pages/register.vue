@@ -264,14 +264,14 @@
 <style>
 
   .el-form-item__label{
-    color:black;
-    font-size: 16px;
+    color:black !important;
+    font-size: 16px !important;
   }
 
   .el-tabs__item{
     font-size: 18px !important;
-    padding-left: 50px;
-    padding-right: 50px;
+    padding-left: 50px !important;
+    padding-right: 50px !important;
   }
 
 </style>

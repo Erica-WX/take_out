@@ -11,7 +11,7 @@
             <el-form-item label="用户名">
               <el-input v-model="login_form.adminName"></el-input>
             </el-form-item>
-            <el-form-item label="用户密码">
+            <el-form-item label="密码">
               <el-input type="password" v-model="login_form.password"></el-input>
             </el-form-item>
           </el-form>
@@ -79,7 +79,7 @@
     height: 700px;
     background-image: url("/static/index-back.jpg");
     background-size:100% 100%;
-    border: 1px solid black;
+    border: 1px solid white;
     /*opacity: 0.35;*/
   }
 
@@ -115,7 +115,7 @@
 
 <style>
   .el-form-item__label{
-    color:white;
-    font-size: 16px;
+    color:white !important;
+    font-size: 16px !important;
   }
 </style>

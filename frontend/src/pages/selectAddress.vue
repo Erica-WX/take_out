@@ -201,7 +201,7 @@
 <style>
 
   .el-form-item__label{
-    color:white;
+    color:white !important;
     font-size: 20px;
   }
 

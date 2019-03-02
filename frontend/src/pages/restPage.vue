@@ -179,6 +179,6 @@
 
 <style>
   .el-form-item__label{
-    color: black;
+    color: black !important;
   }
 </style>

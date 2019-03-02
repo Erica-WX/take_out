@@ -22,8 +22,9 @@
         <div class="info_item">
           当前积分：{{this.member_info.score}}
         </div>
-        <div style="margin-left: 25px">
-          <el-button type="info" plain v-on:click="edit">修改信息</el-button>
+        <div style="margin-left: 20px; display: flex">
+          <el-button type="info" plain v-on:click="edit" size="middle">修改信息</el-button>
+          <el-button type="danger" plain="" v-on:click="deleteMember" size="middle">注销账号</el-button>
         </div>
       </div>
       <div v-show="editable" style="margin-bottom: 50px">
@@ -87,6 +88,37 @@
           this.editable = true;
         },
 
+        deleteMember() {
+          let email = localStorage.user_email;
+          let self = this;
+          this.$confirm('注销账户后该账户永不可用，是否注销账户？','提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(()=>{
+            let self2 = self;
+              self.$axios.get('/user/delete_member', {
+                params: {
+                  email: email,
+                }
+              }).then(
+                function (response) {
+                  self2.$message({
+                    message: '注销成功！',
+                    type: 'success'
+                  });
+                  setTimeout("window.location.href = 'http://localhost:3000/#/login'", 3000);
+
+                }
+              ).catch(function (error) {
+                console.log(error);
+              })
+          }
+          ).catch(
+
+          )
+        },
+
         submit() {
           this.editable = false;
 
@@ -95,6 +127,7 @@
           let phone = this.member_info.phone;
           let addressList = this.member_info.addressList;
 
+          let self = this;
           this.$axios.post('/user/edit_info',{
             username: username,
             email: email,
@@ -102,9 +135,11 @@
             addressList: addressList
           }).then(
             function (response) {
-              alert("保存成功！");
+              self.$alert('保存成功！', '', {
+                confirmButtonText: '确定'
+              })
           }).catch(function (error) {
-
+              console.log(error);
           })
 
         },
@@ -161,7 +196,7 @@
 
 <style>
   .el-form-item__label{
-    color:black;
-    font-size: 16px;
+    color:black !important;
+    font-size: 16px !important;
   }
 </style>
