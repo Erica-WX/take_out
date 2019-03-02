@@ -1,5 +1,7 @@
 package com.example.demo.service.admin;
 
+import com.example.demo.payloads.admin.AdminMemberResponse;
+import com.example.demo.payloads.admin.AdminRestResponse;
 import com.example.demo.payloads.admin.ApproveAbstractResponse;
 import com.example.demo.payloads.admin.ModifyInfoResponse;
 
@@ -21,4 +23,12 @@ public interface AdminService {
     void approveModify(int mid);
 
     void rejectModify(int mid);
+
+    AdminMemberResponse getMemberInfo();
+
+    AdminRestResponse getRestInfo();
+
+    double getEarning();
+
+    double[] getEarningList(String year);
 }

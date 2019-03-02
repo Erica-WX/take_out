@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import com.example.demo.payloads.admin.AdminMemberResponse;
+import com.example.demo.payloads.admin.AdminRestResponse;
 import com.example.demo.payloads.admin.ApproveAbstractResponse;
 import com.example.demo.payloads.admin.ModifyInfoResponse;
 import com.example.demo.service.admin.AdminService;
@@ -42,4 +44,16 @@ public class AdminController {
 
     @GetMapping("/reject_modify")
     public void rejectModify(int mid) {adminService.rejectModify(mid);}
+
+    @PostMapping("/get_member_info")
+    public AdminMemberResponse getMemberInfo() { return adminService.getMemberInfo();}
+
+    @PostMapping("/get_rest_info")
+    public AdminRestResponse getRestInfo() { return adminService.getRestInfo();}
+
+    @PostMapping("/get_plat_earning")
+    public double getPlatEarning() {return adminService.getEarning();}
+
+    @GetMapping("/get_earning_list")
+    public double[] getEarningList(String year) {return adminService.getEarningList(year);}
 }

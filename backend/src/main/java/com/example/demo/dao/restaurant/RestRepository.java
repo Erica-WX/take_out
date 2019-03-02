@@ -1,6 +1,7 @@
 package com.example.demo.dao.restaurant;
 
 import com.example.demo.entity.Restaurant;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
@@ -17,4 +18,7 @@ public interface RestRepository extends CrudRepository<Restaurant, String> {
     Optional<Restaurant> findById(String id);
 
     List<Restaurant> findByDistrict(String district);
+
+    @Query(value = "select * from restaurant", nativeQuery = true)
+    List<Restaurant> getAll();
 }

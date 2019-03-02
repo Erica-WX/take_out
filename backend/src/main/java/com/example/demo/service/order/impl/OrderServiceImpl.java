@@ -11,6 +11,7 @@ import com.example.demo.entity.*;
 import com.example.demo.payloads.order.*;
 import com.example.demo.payloads.restaurant.FoodListResponse;
 import com.example.demo.service.order.OrderService;
+import com.example.demo.util.OrderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -285,7 +286,7 @@ public class OrderServiceImpl implements OrderService {
         // 退款
         ExpressState expressState = expressStateRepository.findByOid(oid).get();
         String state = expressState.getState();
-        double percent = getOrderPercent(state);
+        double percent = OrderUtil.getOrderPercent(state);
         double sum = orders.getSum();
         double cancelMoney = twoBitDouble(sum * percent);
         double returnMoney = twoBitDouble(sum - cancelMoney);
@@ -373,7 +374,7 @@ public class OrderServiceImpl implements OrderService {
             if(isCancel) {
                 ExpressState expressState = expressStateRepository.findByOid(o.getId()).get();
                 String state = expressState.getState();
-                double percent = getOrderPercent(state);
+                double percent = OrderUtil.getOrderPercent(state);
                 earning = twoBitDouble(percent * sum * 0.7);
             }else {
                 earning = twoBitDouble(sum * 0.7);
@@ -461,22 +462,6 @@ public class OrderServiceImpl implements OrderService {
         }
 
         return level;
-    }
-
-    private double getOrderPercent(String state) {
-
-        double percent = 0;
-        if(state.equals("等待商家接单")) {
-            percent = 0;
-        }else if(state.equals("等待商家发货")) {
-            percent = 0.05;
-        }else if(state.equals("配送中")) {
-            percent = 0.1;
-        }else if(state.equals("已送达")) {
-            percent = 0.2;
-        }
-
-        return percent;
     }
 
     private double twoBitDouble(double num) {
