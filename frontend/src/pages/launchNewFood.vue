@@ -31,13 +31,16 @@
             <el-date-picker
               v-model="date1"
               type="date"
-              placeholder="选择开始日期">
+              placeholder="选择开始日期"
+              
+              >
             </el-date-picker>
             <div>-</div>
             <el-date-picker
               v-model="date2"
               type="date"
-              placeholder="选择结束日期">
+              placeholder="选择结束日期"
+              >
             </el-date-picker>
           </div>
 
@@ -68,6 +71,32 @@
     export default {
       name: "launch-new-food",
       components:{restNavi},
+      mounted: function() {
+        
+        let restId = localStorage.rest_id;
+        let self = this;
+        console.log("restId:" + restId);
+        this.$axios.get("/rest/is_approved", {
+          params: {
+            restId: restId
+          }
+        }).then(
+          function(response) {
+            let is_approved = response.data;
+            if( !is_approved) {
+              let self2 = self;
+              self.$alert('餐厅修改信息暂未通过审核请稍后！', '', {
+                confirmButtonText: '确定',
+                callback: action => {
+                  self2.$router.push({name: 'restPage'});
+              }
+              })
+            }
+          }
+        ).catch(function(error){
+            console.log(error);
+        });
+      },
       data() {
         return {
           date1: '',
@@ -139,5 +168,12 @@
     margin-top: 40px;
     margin-left: 20px;
     width: 440px;
+  }
+</style>
+
+<style>
+.el-form-item__label{
+    color:black !important;
+    font-size: 16px !important;
   }
 </style>

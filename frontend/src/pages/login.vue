@@ -138,7 +138,7 @@
 <style>
 
   .el-form-item__label{
-    color:white !important;
+    color:white ;
     font-size: 16px !important;
   }
   /*.el-form-item__label{

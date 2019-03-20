@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Author: 王轩
@@ -16,5 +17,7 @@ public interface ModifyInfoRepository extends CrudRepository<ModifyInfo, Integer
 
     @Query(value = "select * from modify_info", nativeQuery = true)
     List<ModifyInfo> getAll();
+
+    List<ModifyInfo> findByRestaurant(Restaurant restaurant);
 
 }

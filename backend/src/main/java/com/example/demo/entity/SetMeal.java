@@ -2,6 +2,7 @@ package com.example.demo.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 /**
  * @Author: 王轩
@@ -27,16 +28,22 @@ public class SetMeal {
 
     private int amount;
 
+    private LocalDate startDate;
+
+    private LocalDate endDate;
+
     private String image;
 
     public SetMeal() {
     }
 
-    public SetMeal(String name, Restaurant restaurant,  double price, int amount, String image) {
+    public SetMeal(String name, Restaurant restaurant,  double price, int amount, LocalDate startDate, LocalDate endDate, String image) {
         this.name = name;
         this.restaurant = restaurant;
         this.price = price;
         this.amount = amount;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.image = image;
     }
 
@@ -78,5 +85,29 @@ public class SetMeal {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
     }
 }

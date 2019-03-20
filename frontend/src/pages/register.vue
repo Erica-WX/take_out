@@ -186,6 +186,8 @@
           let phone = this.member_form.phone;
           console.log(username, email, password);
 
+          let self = this;
+
           this.$axios.post("/user/register",{
             username: username,
             password: password,
@@ -193,7 +195,13 @@
             phone: phone
           }).then(
             function (response) {
-              console.log(response);
+              let self2 = self;
+              self.$alert('注册成功！', '', {
+                confirmButtonText: '确定',
+                callback: action => {
+                  self2.$router.push({name: 'login'});
+              }
+              })
             }
           )
         },

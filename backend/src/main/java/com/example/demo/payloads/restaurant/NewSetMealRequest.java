@@ -1,5 +1,6 @@
 package com.example.demo.payloads.restaurant;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -16,6 +17,10 @@ public class NewSetMealRequest {
     private double price;
 
     private int amount;
+
+    private LocalDate startDate;
+
+    private LocalDate endDate;
 
     private String image;
 
@@ -39,6 +44,14 @@ public class NewSetMealRequest {
 
     public String getImage() {
         return image;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
     }
 
     public List<FoodInfoInSetMeal> getFoodList() {

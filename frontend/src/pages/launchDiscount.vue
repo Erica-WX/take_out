@@ -75,8 +75,33 @@
     export default {
       name: "launch-discount",
       components:{restNavi},
-      mounted: function () {
-        this.get_discount_list();
+      mounted: function() {
+        
+        let restId = localStorage.rest_id;
+        let self = this;
+        console.log("restId:" + restId);
+        this.$axios.get("/rest/is_approved", {
+          params: {
+            restId: restId
+          }
+        }).then(
+          function(response) {
+            let is_approved = response.data;
+            if( !is_approved) {
+              let self2 = self;
+              self.$alert('餐厅修改信息暂未通过审核请稍后！', '', {
+                confirmButtonText: '确定',
+                callback: action => {
+                  self2.$router.push({name: 'restPage'});
+              }
+              })
+            }else {
+                self.get_discount_list();
+            }
+          }
+        ).catch(function(error){
+            console.log(error);
+        });
       },
       data() {
         return {
@@ -157,4 +182,10 @@
     margin-bottom: 50px;
   }
 
+</style>
+<style>
+.el-form-item__label{
+    color:black !important;
+    font-size: 16px !important;
+  }
 </style>

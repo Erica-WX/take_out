@@ -64,11 +64,16 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public String login(String email, String password){
-        Optional<Member> member = memberRepository.findByEmail(email);
+        Optional<Member> optional = memberRepository.findByEmail(email);
 
-        if(member.isPresent()){
-            if(member.get().getPassword().equals(password)){
-                return member.get().getUsername();
+        if(optional.isPresent()){
+            Member member = optional.get();
+            if(member.isUsable()) {
+                if(member.getPassword().equals(password)){
+                    return member.getUsername();
+                }
+            }else {
+                return "-1";
             }
         }
 
@@ -144,5 +149,12 @@ public class MemberServiceImpl implements MemberService {
     public int getLevel(String email) {
         Member member = memberRepository.findByEmail(email).get();
         return member.getLevel();
+    }
+
+    @Override
+    public void deleteMember(String email) {
+        Member member = memberRepository.findByEmail(email).get();
+        member.setUsable(false);
+        memberRepository.save(member);
     }
 }

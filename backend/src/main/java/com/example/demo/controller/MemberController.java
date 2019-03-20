@@ -79,5 +79,8 @@ public class MemberController {
         return memberService.getLevel(email);
     }
 
+    @GetMapping("/delete_member")
+    public void deleteMember(String email) {memberService.deleteMember(email);}
+
 
 }

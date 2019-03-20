@@ -54,4 +54,7 @@ public class RestaurantController {
 
     @PostMapping("/cal_order")
     public OrderResponse calOrder(@RequestBody CalOrderRequest request){return restService.calOrder(request);}
+
+    @GetMapping("/is_approved")
+    public boolean isApproved(String restId) {return restService.isApproved(restId);}
 }

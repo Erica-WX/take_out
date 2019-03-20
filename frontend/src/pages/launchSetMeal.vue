@@ -11,7 +11,27 @@
           <el-form-item label="套餐数量">
             <el-input v-model="setmeal_info.amount"></el-input>
           </el-form-item>
-          <div class="title">添加商品：</div>
+
+           <el-form-item label="在售时段">
+            <div style="display: flex">
+            <el-date-picker
+              v-model="date1"
+              type="date"
+              placeholder="选择开始日期"
+              style="width:260px;">
+            </el-date-picker>
+            <div>-</div>
+            <el-date-picker
+              v-model="date2"
+              type="date"
+              placeholder="选择结束日期"
+              style="width:260px;">
+            </el-date-picker>
+          </div>
+
+        </el-form-item>
+
+          <div class="title" style="margin-top: 20px; margin-bottom: 10px">添加商品：</div>
           <el-table
             :data="setmeal_info.food_list"
             stripe=""
@@ -111,11 +131,39 @@
     export default {
       name: "launch-setmeal",
       components:{restNavi},
-      mounted: function () {
-        this.get_food_list();
+      mounted: function() {
+        
+        let restId = localStorage.rest_id;
+        let self = this;
+        console.log("restId:" + restId);
+        this.$axios.get("/rest/is_approved", {
+          params: {
+            restId: restId
+          }
+        }).then(
+          function(response) {
+            let is_approved = response.data;
+            if( !is_approved) {
+              let self2 = self;
+              self.$alert('餐厅修改信息暂未通过审核请稍后！', '', {
+                confirmButtonText: '确定',
+                callback: action => {
+                  self2.$router.push({name: 'restPage'});
+              }
+              })
+            }else {
+                self.get_food_list();
+            }
+          }
+        ).catch(function(error){
+            console.log(error);
+        });
       },
+  
       data() {
         return {
+          date1:'',
+          date2:'',
           setmeal_info:{
             name: '',
             price: 0.0,
@@ -179,6 +227,8 @@
           let amount = this.setmeal_info.amount;
           let image = this.real_setmeal.image;
           let food_list = this.real_setmeal.food_list;
+          let startDate = this.date1;
+          let endDate = this.date2;
 
           this.$axios.post('/rest/new_setmeal',{
             name: name,
@@ -186,7 +236,9 @@
             price: price,
             amount: amount,
             image:image,
-            foodList: food_list
+            foodList: food_list,
+            startDate: startDate,
+            endDate: endDate
           }).then(
             function (response) {
               alert("发布成功！");
@@ -231,4 +283,10 @@
     margin-bottom: 50px;
   }
 
+</style>
+<style>
+.el-form-item__label{
+    color:black !important;
+    font-size: 16px !important;
+  }
 </style>

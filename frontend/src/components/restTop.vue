@@ -7,8 +7,20 @@
     </el-col>
 
     <el-col :span="18">
-      <div style="height: 60px; background-color: #409EFF">
+      <div>
+        <el-menu :default-active="activeIndex"
+                 class="el-menu-demo"
+                 mode="horizontal"
+                 @select="handleSelect"
+                 background-color="#409EFF"
+                 text-color="#fff"
+                 active-text-color="#000000"
+                 :router="routerBool"
 
+        >
+          <el-menu-item index="/restLogin">登出</el-menu-item>
+
+        </el-menu>
       </div>
     </el-col>
   </el-row>
@@ -19,12 +31,20 @@
     name: "rest-top",
     data() {
       return {
-        activeIndex: '1',
+        activeIndex: '',
+        routerBool:true
       }
     },
     methods: {
-      handleSelect() {
+      handleSelect(key, keyPath) {
+        console.log(key,keyPath);
+        if(key === "/restLogin") {
+          this.logout();
+        }
+      },
 
+      logout() {
+        localStorage.rest_id = "";
       }
     }
   }

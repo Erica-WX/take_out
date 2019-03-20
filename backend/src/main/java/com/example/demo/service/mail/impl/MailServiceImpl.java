@@ -37,7 +37,7 @@ public class MailServiceImpl implements MailService {
             helper.setTo(email);
             helper.setSubject("验证你的电子邮件地址");
 
-            String content = "<html><head></head><body><h1>验证你的电子邮件地址</h1><h3><a href='http://localhost:8000/member/verify?code="
+            String content = "<html><head></head><body><h1>验证你的电子邮件地址</h1><h3><a href='http://localhost:8000/user/verify?code="
                     + code + "'>http://localhost:8000/user/verify?code=" + code
                     + "</href></h3><h5>若浏览器不能正常跳转，请复制链接到地址栏</h5></body></html>";
 

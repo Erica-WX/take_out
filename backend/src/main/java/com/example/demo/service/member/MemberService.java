@@ -17,4 +17,5 @@ public interface MemberService {
     MemberInfoResponse getInfo(String email);
     void saveInfo(EditMemberInfoRequest request);
     int getLevel(String email);
+    void deleteMember(String email);
 }

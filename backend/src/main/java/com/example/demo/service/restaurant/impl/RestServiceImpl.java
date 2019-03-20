@@ -113,10 +113,9 @@ public class RestServiceImpl implements RestService {
     @Override
     public List<FoodListResponse> getFoodList(String id) {
 
-        Restaurant rest = new Restaurant();
-        rest.setId(id);
+        LocalDate now = LocalDate.now();
 
-        List<Food> foods = foodRepository.findByRest(rest);
+        List<Food> foods = foodRepository.getFoodByDate(id, now);
 
         ArrayList<FoodListResponse> foodList = new ArrayList<>();
 
@@ -137,13 +136,19 @@ public class RestServiceImpl implements RestService {
         String s_name = setMealRequest.getName();
         double s_price = setMealRequest.getPrice();
         int amount = setMealRequest.getAmount();
+        LocalDate startDate = setMealRequest.getStartDate();
+        LocalDate endDate = setMealRequest.getEndDate();
         String image = setMealRequest.getImage();
 
         Restaurant restaurant = new Restaurant();
         restaurant.setId(restId);
 
-        SetMeal setMeal = new SetMeal(s_name, restaurant, s_price, amount, image);
+        SetMeal setMeal = new SetMeal(s_name, restaurant, s_price, amount, startDate, endDate, image);
         SetMeal newSetMeal = setMealRepository.save(setMeal);
+
+        Food f = new Food(restaurant, s_name, "套餐", s_price, amount, startDate, endDate, image);
+        foodRepository.save(f);
+
 
         List<FoodInfoInSetMeal> foodList = setMealRequest.getFoodList();
         for(FoodInfoInSetMeal foodInfo: foodList) {
@@ -271,6 +276,18 @@ public class RestServiceImpl implements RestService {
         return response;
     }
 
+    @Override
+    public boolean isApproved(String restId) {
+
+        Restaurant restaurant = restRepository.findById(restId).get();
+        List<ModifyInfo> modifyInfoList = modifyInfoRepository.findByRestaurant(restaurant);
+
+        if(modifyInfoList == null || modifyInfoList.size() == 0) {
+            return true;
+        }else {
+            return false;
+        }
+    }
 
 
     private double getDisBylevel(int level) {

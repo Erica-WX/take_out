@@ -7,8 +7,20 @@
     </el-col>
 
     <el-col :span="18">
-      <div style="height: 60px; background-color: #409EFF">
+      <div>
+        <el-menu :default-active="activeIndex"
+                 class="el-menu-demo"
+                 mode="horizontal"
+                 @select="handleSelect"
+                 background-color="#409EFF"
+                 text-color="#fff"
+                 active-text-color="#000000"
+                 :router="routerBool"
 
+        >
+          <el-menu-item index="/adminLogin">登出</el-menu-item>
+
+        </el-menu>
       </div>
     </el-col>
   </el-row>
@@ -19,7 +31,8 @@
       name: "admin-top",
       data() {
         return {
-          activeIndex: '1',
+          activeIndex: '',
+          routerBool:true
         }
       },
       methods: {

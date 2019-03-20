@@ -29,7 +29,7 @@
 </template>
 
 <script>
-    import topBar from '../components/topBar'
+    import topBar from '../components/restTop'
     export default {
       name: "rest-login",
       components: {topBar},
@@ -117,7 +117,7 @@
 
 <style>
   .el-form-item__label{
-    color:white !important;
+    color:white ;
     font-size: 16px !important;
   }
 </style>

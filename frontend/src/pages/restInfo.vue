@@ -46,7 +46,7 @@
           },
           food_list:[
             {
-              name:'精品冒菜',
+              name:'冒菜',
               type:'主食',
               image:'http://localhost:8000/images/upload/1.jpg',
               price:20,

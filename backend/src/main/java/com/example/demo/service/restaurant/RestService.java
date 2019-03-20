@@ -32,4 +32,6 @@ public interface RestService {
     void saveInfo(EditRestInfoResquest resquest);
 
     OrderResponse calOrder(CalOrderRequest request);
+
+    boolean isApproved(String restId);
 }
